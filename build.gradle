@@ -20,6 +20,8 @@ ext {
     mockitoVersion = '1.10.19'
     assertjVersion = '3.2.0'
     servletVersion = '3.1.0'
+    commonsCollectionsVersion = '4.0'
+    commonsVersion = '3.4'
 
 }
 
@@ -29,6 +31,8 @@ dependencies {
 
             // Jackson
             [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: jacksonVersion],
 
             // Groovy
             [group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion],
@@ -39,9 +43,13 @@ dependencies {
             [group: 'org.springframework', name: 'spring-webmvc', version: springVersion],
             [group: 'org.springframework', name: 'spring-context-support', version: springVersion],
 
+            // Apache Commons Collections
+            [group: 'org.apache.commons', name: 'commons-collections4', version: commonsCollectionsVersion],
+            [group: 'org.apache.commons', name: 'commons-lang3', version: commonsVersion]
+
     )
 
-    providedCompile (
+    providedCompile(
 
             // Servlet API
             [group: 'javax.servlet', name: 'javax.servlet-api', version: servletVersion]
