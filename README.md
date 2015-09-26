@@ -1,5 +1,5 @@
 # study
-This one can be described as simple project to understand interactions between Spring Integration abstraction and Spring Batch.
+This one can be described as simple project to understand interactions between **Spring Integration** abstraction and **Spring Batch**.
 
 Latest Spring releases is being used here.
 
