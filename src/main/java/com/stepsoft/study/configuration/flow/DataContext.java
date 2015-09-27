@@ -1,11 +1,12 @@
 package com.stepsoft.study.configuration.flow;
 
-import com.stepsoft.study.data.entity.DbDto;
+import com.stepsoft.study.data.entity.Sinner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.expression.ExpressionParser;
 import org.springframework.integration.jpa.core.JpaExecutor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -21,6 +22,7 @@ import java.util.Properties;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.HIBERNATE_DIALECT_PROPERTY_KEY;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.HIBERNATE_SHOW_SQL_PROPERTY_KEY;
+import static org.springframework.integration.jpa.support.PersistMode.DELETE;
 
 /**
  * @author Eugene Stepanenkov
@@ -48,7 +50,14 @@ public class DataContext {
     @Value("${db.hibernate.showSql}")
     private String showSql;
 
-    private Properties vendorProperties() {
+    @Autowired
+    private EntityManagerFactory factory;
+
+    @Autowired
+    private ExpressionParser expressionParser;
+
+    @Bean
+    public Properties vendorProperties() {
 
         Properties properties = new Properties();
         properties.setProperty(HIBERNATE_DIALECT_PROPERTY_KEY, dialect);
@@ -84,8 +93,7 @@ public class DataContext {
     }
 
     @Bean
-    @Autowired
-    public PlatformTransactionManager transactionManager(EntityManagerFactory factory) {
+    public PlatformTransactionManager transactionManager() {
 
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(factory);
@@ -94,11 +102,31 @@ public class DataContext {
     }
 
     @Bean
-    @Autowired
-    public JpaExecutor addModelDbJpaExecutor(EntityManagerFactory factory) {
+    public JpaExecutor importAddOrUpdateJpaExecutor() {
 
         JpaExecutor executor = new JpaExecutor(factory);
-        executor.setEntityClass(DbDto.class);
+        executor.setEntityClass(Sinner.class);
+
+        return executor;
+    }
+
+    @Bean
+    public JpaExecutor importFetchJpaExecutor() {
+
+        JpaExecutor executor = new JpaExecutor(factory);
+        executor.setEntityClass(Sinner.class);
+        executor.setIdExpression(expressionParser.parseExpression("payload"));
+        executor.setExpectSingleResult(true);
+
+        return executor;
+    }
+
+    @Bean
+    public JpaExecutor importDeleteJpaExecutor() {
+
+        JpaExecutor executor = new JpaExecutor(factory);
+        executor.setEntityClass(Sinner.class);
+        executor.setPersistMode(DELETE);
 
         return executor;
     }

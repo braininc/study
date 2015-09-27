@@ -1,13 +1,15 @@
 package com.stepsoft.study.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stepsoft.study.configuration.flow.ModelFlowContext;
+import com.stepsoft.study.configuration.flow.FlowContext;
 import com.stepsoft.study.configuration.mvc.CoreWebContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -16,9 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  */
 @Configuration
 @PropertySource("classpath:application.properties")
-@Import({
-        CoreWebContext.class, ModelFlowContext.class
-})
+@Import({CoreWebContext.class, FlowContext.class})
 public class CoreContext {
 
     @Bean
@@ -33,5 +33,11 @@ public class CoreContext {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(NON_NULL);
         return mapper;
+    }
+
+    @Bean
+    public ExpressionParser expressionParser() {
+
+        return new SpelExpressionParser();
     }
 }

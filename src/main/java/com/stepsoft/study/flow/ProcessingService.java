@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  * @author Eugene Stepanenkov
  */
 @Service
-public class BatchServiceActivator {
+public class ProcessingService {
 
     public Message<RestModel> service(Message<RestModel> message) {
 

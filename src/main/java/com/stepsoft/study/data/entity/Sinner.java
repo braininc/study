@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 import java.util.Set;
 
 import static com.stepsoft.study.data.utils.EntityConstants.SINNER;
-import static javax.persistence.CascadeType.REMOVE;
+import static javax.persistence.CascadeType.ALL;
 
 /**
  * @author Eugene Stepanenkov
@@ -22,7 +22,7 @@ public class Sinner implements DbDto {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = SINNER, cascade = REMOVE)
+    @OneToMany(mappedBy = SINNER, cascade = ALL)
     private Set<Karma> karma;
 
     private String userName;

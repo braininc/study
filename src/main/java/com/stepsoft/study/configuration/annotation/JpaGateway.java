@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({METHOD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
 @ServiceActivator
-public @interface DbOutboundGateway {
+public @interface JpaGateway {
 
     String inputChannel() default "";
 
