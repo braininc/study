@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.integration.jpa.core.JpaExecutor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -89,5 +90,12 @@ public class DataContext {
         transactionManager.setEntityManagerFactory(factory);
 
         return transactionManager;
+    }
+
+    @Bean
+    @Autowired
+    public JpaExecutor jpaExecutor(EntityManagerFactory factory) {
+
+        return new JpaExecutor(factory);
     }
 }

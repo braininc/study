@@ -11,7 +11,6 @@ public class KarmaModel implements RestModel {
     private Long id;
     private Long sinnerId;
     private Integer drunkBottles;
-    private Integer foulLanguageTimes;
     private Integer maliciousLevel;
     private Boolean seenBlasphemy;
 
@@ -33,14 +32,6 @@ public class KarmaModel implements RestModel {
 
     public void setDrunkBottles(Integer drunkBottles) {
         this.drunkBottles = drunkBottles;
-    }
-
-    public Integer getFoulLanguageTimes() {
-        return foulLanguageTimes;
-    }
-
-    public void setFoulLanguageTimes(Integer foulLanguageTimes) {
-        this.foulLanguageTimes = foulLanguageTimes;
     }
 
     public Integer getMaliciousLevel() {
@@ -77,7 +68,6 @@ public class KarmaModel implements RestModel {
                 .append(id, that.id)
                 .append(sinnerId, that.sinnerId)
                 .append(drunkBottles, that.drunkBottles)
-                .append(foulLanguageTimes, that.foulLanguageTimes)
                 .append(maliciousLevel, that.maliciousLevel)
                 .append(seenBlasphemy, that.seenBlasphemy)
                 .isEquals();
@@ -90,7 +80,6 @@ public class KarmaModel implements RestModel {
                 .append(id)
                 .append(sinnerId)
                 .append(drunkBottles)
-                .append(foulLanguageTimes)
                 .append(maliciousLevel)
                 .append(seenBlasphemy)
                 .toHashCode();
