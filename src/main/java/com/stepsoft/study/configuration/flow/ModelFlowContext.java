@@ -113,9 +113,10 @@ public class ModelFlowContext {
         }
     }
 
+    @Bean
     @Autowired
     @DbOutboundGateway(inputChannel = IN_MODEL_GATEWAY_CHANNEL)
-    public JpaOutboundGateway dbGateway(JpaExecutor jpaExecutor) {
+    public JpaOutboundGateway addModelDbGateway(JpaExecutor jpaExecutor) {
 
         JpaOutboundGateway gateway = new JpaOutboundGateway(jpaExecutor);
         gateway.setOutputChannelName(OUT_MODEL_GATEWAY_CHANNEL);
@@ -123,4 +124,6 @@ public class ModelFlowContext {
 
         return gateway;
     }
+
+
 }

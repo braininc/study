@@ -1,5 +1,6 @@
 package com.stepsoft.study.configuration.flow;
 
+import com.stepsoft.study.data.entity.DbDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -94,8 +95,11 @@ public class DataContext {
 
     @Bean
     @Autowired
-    public JpaExecutor jpaExecutor(EntityManagerFactory factory) {
+    public JpaExecutor addModelDbJpaExecutor(EntityManagerFactory factory) {
 
-        return new JpaExecutor(factory);
+        JpaExecutor executor = new JpaExecutor(factory);
+        executor.setEntityClass(DbDto.class);
+
+        return executor;
     }
 }
