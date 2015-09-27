@@ -27,9 +27,7 @@ import org.springframework.integration.splitter.DefaultMessageSplitter;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.Payload;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -70,17 +68,12 @@ public class ImportFlowContext {
     public static class InImportRouterEndpoint {
 
         @Router(inputChannel = IN_IMPORT_CHANNEL)
-        public String route(@Header(name = BULK_SIZE) String bulkSize,
-                            @Header(name = IMPORT_ACTION) ImportAction action,
-                            @Payload Object message) {
+        public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
 
             switch (action) {
 
                 case ADD_BULK:
-                    if (message instanceof Collections) {
-                        return IN_IMPORT_SPLITTER_CHANNEL;
-                    }
-                    return IN_IMPORT_PROCESSING_CHANNEL;
+                    return IN_IMPORT_SPLITTER_CHANNEL;
 
                 default:
                     return IN_IMPORT_DB_CHANNEL;
@@ -93,7 +86,7 @@ public class ImportFlowContext {
     public DefaultMessageSplitter inImportSplitter() {
 
         DefaultMessageSplitter splitter = new DefaultMessageSplitter();
-        splitter.setOutputChannelName(IN_IMPORT_CHANNEL);
+        splitter.setOutputChannelName(IN_IMPORT_PROCESSING_CHANNEL);
 
         return splitter;
     }
