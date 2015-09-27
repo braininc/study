@@ -1,6 +1,6 @@
 package com.stepsoft.study.flow;
 
-import com.stepsoft.study.mvc.model.RestModel;
+import com.stepsoft.study.data.entity.Sinner;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProcessingService {
 
-    public Message<RestModel> service(Message<RestModel> message) {
-
+    public Message<Sinner> service(Message<Sinner> message) {
         return message;
     }
 }

@@ -1,9 +1,9 @@
 package com.stepsoft.study.configuration.flow;
 
 import com.stepsoft.study.configuration.annotation.JpaGateway;
+import com.stepsoft.study.data.entity.Sinner;
 import com.stepsoft.study.flow.ProcessingService;
 import com.stepsoft.study.flow.messaging.ImportAction;
-import com.stepsoft.study.mvc.model.RestModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -86,7 +86,8 @@ public class ImportFlowContext {
         private ProcessingService serviceActivator;
 
         @ServiceActivator(inputChannel = IN_IMPORT_PROCESSING_CHANNEL, outputChannel = OUT_IMPORT_PROCESSING_CHANNEL)
-        public Message<RestModel> serviceMethod(Message<RestModel> message) {
+        public Message<Sinner> serviceMethod(Message<Sinner> message) {
+
             return serviceActivator.service(message);
         }
     }

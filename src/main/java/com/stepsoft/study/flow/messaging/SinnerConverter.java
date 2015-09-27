@@ -75,7 +75,6 @@ public class SinnerConverter implements GenericConverter {
         }
 
         return sinner;
-
     }
 
     @Override

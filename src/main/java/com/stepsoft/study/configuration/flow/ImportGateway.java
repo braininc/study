@@ -1,6 +1,6 @@
 package com.stepsoft.study.configuration.flow;
 
-import com.stepsoft.study.mvc.model.RestModel;
+import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.GatewayHeader;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -8,8 +8,8 @@ import org.springframework.integration.annotation.MessagingGateway;
 import java.util.Set;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.BULK_SIZE;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IMPORT_ACTION;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 
 /**
@@ -27,7 +27,7 @@ public interface ImportGateway {
                     expression = "T(com.stepsoft.study.flow.messaging.ImportAction).ADD"
             )
     })
-    Long add(RestModel model);
+    Long add(SinnerModel sinner);
 
     @Gateway(headers = {
             @GatewayHeader(
@@ -39,7 +39,7 @@ public interface ImportGateway {
                     expression = "T(com.stepsoft.study.flow.messaging.ImportAction).ADD_BULK"
             )
     })
-    Set<Long> add(Set<RestModel> model);
+    Set<Long> add(Set<SinnerModel> sinners);
 
     @Gateway(headers = {
             @GatewayHeader(
@@ -47,7 +47,7 @@ public interface ImportGateway {
                     expression = "T(com.stepsoft.study.flow.messaging.ImportAction).UPDATE"
             )
     })
-    void modify(RestModel model);
+    void modify(SinnerModel sinner);
 
     @Gateway(headers = {
             @GatewayHeader(
@@ -63,5 +63,5 @@ public interface ImportGateway {
                     expression = "T(com.stepsoft.study.flow.messaging.ImportAction).FETCH"
             )
     })
-    RestModel find(Long id);
+    SinnerModel find(Long id);
 }

@@ -51,9 +51,6 @@ public class DataContext {
     private String showSql;
 
     @Autowired
-    private EntityManagerFactory factory;
-
-    @Autowired
     private ExpressionParser expressionParser;
 
     @Bean
@@ -93,7 +90,8 @@ public class DataContext {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager() {
+    @Autowired
+    public PlatformTransactionManager transactionManager(EntityManagerFactory factory) {
 
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(factory);
@@ -102,7 +100,8 @@ public class DataContext {
     }
 
     @Bean
-    public JpaExecutor importAddOrUpdateJpaExecutor() {
+    @Autowired
+    public JpaExecutor importAddOrUpdateJpaExecutor(EntityManagerFactory factory) {
 
         JpaExecutor executor = new JpaExecutor(factory);
         executor.setEntityClass(Sinner.class);
@@ -111,7 +110,8 @@ public class DataContext {
     }
 
     @Bean
-    public JpaExecutor importFetchJpaExecutor() {
+    @Autowired
+    public JpaExecutor importFetchJpaExecutor(EntityManagerFactory factory) {
 
         JpaExecutor executor = new JpaExecutor(factory);
         executor.setEntityClass(Sinner.class);
@@ -122,7 +122,8 @@ public class DataContext {
     }
 
     @Bean
-    public JpaExecutor importDeleteJpaExecutor() {
+    @Autowired
+    public JpaExecutor importDeleteJpaExecutor(EntityManagerFactory factory) {
 
         JpaExecutor executor = new JpaExecutor(factory);
         executor.setEntityClass(Sinner.class);
