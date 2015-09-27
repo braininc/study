@@ -10,7 +10,7 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.ADDI
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.ADDING_MODEL_REPLY_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.FINDING_MODEL_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.FINDING_MODEL_REPLY_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_DB_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_MODEL_GATEWAY_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.MODIFYING_MODEL_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.REMOVING_MODEL_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.REPLY_DB_CHANNEL;
@@ -75,7 +75,7 @@ public class ChannelContext {
         return new QueueChannel();
     }
 
-    @Bean(name = IN_DB_CHANNEL)
+    @Bean(name = IN_MODEL_GATEWAY_CHANNEL)
     public QueueChannel inDbChannel() {
 
         return new QueueChannel();

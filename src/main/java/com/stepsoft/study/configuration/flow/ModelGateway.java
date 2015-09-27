@@ -14,7 +14,7 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.ADDI
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.BULK_SIZE;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.FINDING_MODEL_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.FINDING_MODEL_REPLY_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.MODEL_GATE_WAY_ACTION;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.MODEL_GATEWAY_ACTION;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.MODIFYING_MODEL_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.REMOVING_MODEL_CHANNEL;
 
@@ -28,7 +28,7 @@ public interface ModelGateway {
             requestChannel = ADDING_MODEL_CHANNEL,
             replyChannel = ADDING_MODEL_REPLY_CHANNEL,
             headers = {
-                    @GatewayHeader(name = MODEL_GATE_WAY_ACTION,
+                    @GatewayHeader(name = MODEL_GATEWAY_ACTION,
                             expression = "T(com.stepsoft.study.flow.messaging.ModelGatewayAction).ADDING_MODEL")
             }
     )
@@ -43,7 +43,7 @@ public interface ModelGateway {
                             expression = "peyload.size()"
                     ),
                     @GatewayHeader(
-                            name = MODEL_GATE_WAY_ACTION,
+                            name = MODEL_GATEWAY_ACTION,
                             expression = "T(com.stepsoft.study.flow.messaging.ModelGatewayAction).ADDING_MODEL_BULK")
             }
     )
@@ -53,7 +53,7 @@ public interface ModelGateway {
             requestChannel = MODIFYING_MODEL_CHANNEL,
             headers = {
                     @GatewayHeader(
-                            name = MODEL_GATE_WAY_ACTION,
+                            name = MODEL_GATEWAY_ACTION,
                             expression = "T(com.stepsoft.study.flow.messaging.ModelGatewayAction).MODIFYING_MODEL")
             }
     )
@@ -63,7 +63,7 @@ public interface ModelGateway {
             requestChannel = REMOVING_MODEL_CHANNEL,
             headers = {
                     @GatewayHeader(
-                            name = MODEL_GATE_WAY_ACTION,
+                            name = MODEL_GATEWAY_ACTION,
                             expression = "T(com.stepsoft.study.flow.messaging.ModelGatewayAction).REMOVING_MODEL")
             }
     )
@@ -74,7 +74,7 @@ public interface ModelGateway {
             replyChannel = FINDING_MODEL_REPLY_CHANNEL,
             headers = {
                     @GatewayHeader(
-                            name = MODEL_GATE_WAY_ACTION,
+                            name = MODEL_GATEWAY_ACTION,
                             expression = "T(com.stepsoft.study.flow.messaging.ModelGatewayAction).FINDING_MODEL")
             }
     )

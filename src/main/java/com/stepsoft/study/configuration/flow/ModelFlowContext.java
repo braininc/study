@@ -31,9 +31,11 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.ADDI
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.ADDING_MODEL_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.ADDING_MODEL_REPLY_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.BULK_SIZE;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_DB_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_MODEL_GATEWAY_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_MODEL_GATEWAY_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.REPLY_DB_CHANNEL;
 import static java.lang.Integer.parseInt;
+import static org.springframework.integration.jpa.support.OutboundGatewayType.UPDATING;
 
 /**
  * @author Eugene Stepanenkov
@@ -105,17 +107,20 @@ public class ModelFlowContext {
         @Autowired
         private BatchServiceActivator serviceActivator;
 
-        @ServiceActivator(inputChannel = ADDING_MODEL_CHANNEL, outputChannel = IN_DB_CHANNEL)
+        @ServiceActivator(inputChannel = ADDING_MODEL_CHANNEL, outputChannel = IN_MODEL_GATEWAY_CHANNEL)
         public Message<RestModel> serviceMethod(Message<RestModel> message) {
             return serviceActivator.service(message);
         }
     }
 
-    @DataOutboundGateway(inputChannel = IN_DB_CHANNEL)
     @Autowired
+    @DataOutboundGateway(inputChannel = IN_MODEL_GATEWAY_CHANNEL)
     public JpaOutboundGateway dbGateway(JpaExecutor jpaExecutor) {
 
-        return new JpaOutboundGateway(jpaExecutor);
-    }
+        JpaOutboundGateway gateway = new JpaOutboundGateway(jpaExecutor);
+        gateway.setOutputChannelName(OUT_MODEL_GATEWAY_CHANNEL);
+        gateway.setGatewayType(UPDATING);
 
+        return gateway;
+    }
 }
