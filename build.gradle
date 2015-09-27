@@ -24,8 +24,10 @@ ext {
     commonsCollectionsVersion = '4.0'
     commonsVersion = '3.4'
     hibernateVersion = '5.0.1.Final'
-    hibernateAnnotationVersion = '3.5.6-Final'
+    hibernateCommonVersion = '5.0.0.Final'
+    hibernatePersistenceVersion = '1.0.0.Final'
     mySqlVersion = '5.1.36'
+    slf4jVersion = '1.7.12'
 
 }
 
@@ -56,7 +58,8 @@ dependencies {
 
             [group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion],
             [group: 'org.hibernate', name: 'hibernate-entitymanager', version: hibernateVersion],
-            [group: 'org.hibernate', name: 'hibernate-annotations', version: hibernateAnnotationVersion],
+            [group: 'org.hibernate.common', name: 'hibernate-commons-annotations', version: hibernateCommonVersion],
+            [group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: hibernatePersistenceVersion],
 
             // Apache Commons Collections
             [group: 'org.apache.commons', name: 'commons-collections4', version: commonsCollectionsVersion],
@@ -85,7 +88,10 @@ dependencies {
     runtime(
 
             // MySql Connector
-            [group: 'mysql', name: 'mysql-connector-java', version: mySqlVersion]
+            [group: 'mysql', name: 'mysql-connector-java', version: mySqlVersion],
+
+            // SLF4J + Log4J
+            [group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion]
     )
 
 }
