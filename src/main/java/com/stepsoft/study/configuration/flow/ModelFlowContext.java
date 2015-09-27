@@ -1,6 +1,6 @@
 package com.stepsoft.study.configuration.flow;
 
-import com.stepsoft.study.configuration.annotation.DataOutboundGateway;
+import com.stepsoft.study.configuration.annotation.DbOutboundGateway;
 import com.stepsoft.study.flow.BatchServiceActivator;
 import com.stepsoft.study.mvc.model.RestModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +114,7 @@ public class ModelFlowContext {
     }
 
     @Autowired
-    @DataOutboundGateway(inputChannel = IN_MODEL_GATEWAY_CHANNEL)
+    @DbOutboundGateway(inputChannel = IN_MODEL_GATEWAY_CHANNEL)
     public JpaOutboundGateway dbGateway(JpaExecutor jpaExecutor) {
 
         JpaOutboundGateway gateway = new JpaOutboundGateway(jpaExecutor);
