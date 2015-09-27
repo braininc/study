@@ -23,7 +23,7 @@ public class Sinner implements DbDto {
     private Long id;
 
     @OneToMany(mappedBy = SINNER, cascade = ALL)
-    private Set<Karma> karma;
+    private Set<Karma> karmas;
 
     private String userName;
 
@@ -31,12 +31,12 @@ public class Sinner implements DbDto {
         this.id = id;
     }
 
-    public Set<Karma> getKarma() {
-        return karma;
+    public Set<Karma> getKarmas() {
+        return karmas;
     }
 
-    public void setKarma(Set<Karma> karma) {
-        this.karma = karma;
+    public void setKarmas(Set<Karma> karma) {
+        this.karmas = karma;
     }
 
     public String getUserName() {
@@ -63,7 +63,7 @@ public class Sinner implements DbDto {
 
         return new EqualsBuilder()
                 .append(id, sinner.id)
-                .append(karma, sinner.karma)
+                .append(karmas, sinner.karmas)
                 .append(userName, sinner.userName)
                 .isEquals();
     }
@@ -73,7 +73,7 @@ public class Sinner implements DbDto {
 
         return new HashCodeBuilder(17, 37)
                 .append(id)
-                .append(karma)
+                .append(karmas)
                 .append(userName)
                 .toHashCode();
     }

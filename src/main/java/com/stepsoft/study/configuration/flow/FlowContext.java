@@ -21,11 +21,13 @@ import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_
 @EnableIntegration
 @IntegrationComponentScan(basePackages = {
         "com.stepsoft.study.flow",
-        "com.stepsoft.study.configuration.flow"
+        "com.stepsoft.study.configuration.flow",
+        "com.stepsoft.study.flow.messaging"
 })
 @ComponentScan(basePackages = {
         "com.stepsoft.study.flow",
-        "com.stepsoft.study.configuration.flow"
+        "com.stepsoft.study.configuration.flow",
+        "com.stepsoft.study.flow.messaging"
 })
 @Import({DataContext.class, ImportFlowContext.class})
 @PropertySource("classpath:flow.properties")
