@@ -3,14 +3,16 @@ package com.stepsoft.study.mvc.model;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Set;
+
 /**
  * @author Eugene Stepanenkov
  */
-public class Sinner implements RestModel {
+public class SinnerModel implements RestModel {
 
     private Long id;
     private String userName;
-    private Karma karma;
+    private Set<KarmaModel> karmas;
 
     public void setId(Long id) {
         this.id = id;
@@ -24,12 +26,12 @@ public class Sinner implements RestModel {
         this.userName = userName;
     }
 
-    public Karma getKarma() {
-        return karma;
+    public Set<KarmaModel> getKarmas() {
+        return karmas;
     }
 
-    public void setKarma(Karma karma) {
-        this.karma = karma;
+    public void setKarmas(Set<KarmaModel> karmas) {
+        this.karmas = karmas;
     }
 
     @Override
@@ -39,25 +41,27 @@ public class Sinner implements RestModel {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        Sinner sinner = (Sinner) o;
+        SinnerModel that = (SinnerModel) o;
 
         return new EqualsBuilder()
-                .append(id, sinner.id)
-                .append(userName, sinner.userName)
-                .append(karma, sinner.karma)
+                .append(id, that.id)
+                .append(userName, that.userName)
+                .append(karmas, that.karmas)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
+
         return new HashCodeBuilder(17, 37)
                 .append(id)
                 .append(userName)
-                .append(karma)
+                .append(karmas)
                 .toHashCode();
     }
 }

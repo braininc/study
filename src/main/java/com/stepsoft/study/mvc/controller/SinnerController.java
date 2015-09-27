@@ -1,29 +1,33 @@
 package com.stepsoft.study.mvc.controller;
 
-import com.stepsoft.study.mvc.model.Sinner;
+import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Set;
 
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.SINNERS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * @author Eugene Stepanenkov
  */
 @Controller
-@RequestMapping(value = SinnerController.SINNERS, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-public class SinnerController extends BaseController<Sinner> {
-
-    public static final String SINNERS = "/sinners";
+@RequestMapping(value = SINNERS, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+public class SinnerController extends BaseController<SinnerModel> {
 
     @Override
-    protected Long add(Sinner model) {
+    protected Long add(SinnerModel model) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected void modify(Sinner model) {
+    protected Set<Long> add(Set<SinnerModel> models) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    protected void modify(SinnerModel model) {
         throw new UnsupportedOperationException();
     }
 
@@ -33,12 +37,7 @@ public class SinnerController extends BaseController<Sinner> {
     }
 
     @Override
-    protected Sinner find(Long id) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    protected Set<Long> add(Set<Sinner> models) {
+    protected SinnerModel find(Long id) {
         throw new UnsupportedOperationException();
     }
 }

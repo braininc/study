@@ -2,24 +2,30 @@ package com.stepsoft.study.mvc.controller;
 
 import com.stepsoft.study.mvc.model.RestModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Set;
 
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.BULK;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toSet;
 import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 /**
  * @author Eugene Stepanenkov
  */
 public abstract class BaseController<M extends RestModel> {
-
-    private static final String BULK = "BULK";
 
     protected abstract Long add(M model);
 
@@ -46,11 +52,10 @@ public abstract class BaseController<M extends RestModel> {
                 .build();
     }
 
-    @SuppressWarnings("unchecked")
     @RequestMapping(method = POST, headers = BULK)
     public ResponseEntity<?> post(@RequestBody M[] models) {
 
-        Set<M> modelsSet = ((Set<M>) stream(models).collect(toSet()));
+        Set<M> modelsSet = stream(models).collect(toSet());
         Set<Long> ids = add(modelsSet);
         final StringBuilder idsString = new StringBuilder("{{");
 

@@ -1,3 +1,13 @@
+CREATE SCHEMA study;
+
+CREATE USER study_user@'%'
+  IDENTIFIED BY '1q2aw3zse4xdrcfv';
+
+GRANT ALL ON study.* TO study_user@'%'
+WITH GRANT OPTION;
+
+USE study;
+
 CREATE TABLE sinner (
   id       INT AUTO_INCREMENT NOT NULL,
   userName VARCHAR(30)        NOT NULL,

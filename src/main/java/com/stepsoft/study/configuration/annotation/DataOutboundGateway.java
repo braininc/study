@@ -1,5 +1,6 @@
 package com.stepsoft.study.configuration.annotation;
 
+import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.annotation.ServiceActivator;
 
 import java.lang.annotation.Retention;
@@ -14,8 +15,22 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target({METHOD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@ServiceActivator(requiresReply = "true")
-public @interface JpaOutboundGateway {
+@ServiceActivator
+public @interface DataOutboundGateway {
 
+    String inputChannel() default "";
 
+    String outputChannel() default "";
+
+    String requiresReply() default "";
+
+    String[] adviceChain() default {};
+
+    String sendTimeout() default "";
+
+    String autoStartup() default "";
+
+    String phase() default "";
+
+    Poller[] poller() default {};
 }

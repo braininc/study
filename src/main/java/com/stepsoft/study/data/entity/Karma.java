@@ -1,14 +1,34 @@
-package com.stepsoft.study.mvc.model;
+package com.stepsoft.study.data.entity;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import static com.stepsoft.study.data.utils.EntityConstants.SINNER_ID;
+
 /**
  * @author Eugene Stepanenkov
  */
-public class Karma implements RestModel {
+@Entity
+public class Karma implements DbModel {
 
+    @Id
+    @GeneratedValue
     private Long id;
+
+    @Column(name = SINNER_ID, updatable = false, insertable = false)
+    private Long sinnerId;
+
+    @ManyToOne
+    @JoinColumn(name = SINNER_ID)
+    private Sinner sinner;
+
     private Integer drunkBottles;
     private Integer foulLanguageTimes;
     private Integer maliciousLevel;
@@ -16,6 +36,14 @@ public class Karma implements RestModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Sinner getSinner() {
+        return sinner;
+    }
+
+    public void setSinner(Sinner sinner) {
+        this.sinner = sinner;
     }
 
     public Integer getDrunkBottles() {
@@ -66,6 +94,7 @@ public class Karma implements RestModel {
 
         return new EqualsBuilder()
                 .append(id, karma.id)
+                .append(sinner, karma.sinner)
                 .append(drunkBottles, karma.drunkBottles)
                 .append(foulLanguageTimes, karma.foulLanguageTimes)
                 .append(maliciousLevel, karma.maliciousLevel)
@@ -78,6 +107,7 @@ public class Karma implements RestModel {
 
         return new HashCodeBuilder(17, 37)
                 .append(id)
+                .append(sinner)
                 .append(drunkBottles)
                 .append(foulLanguageTimes)
                 .append(maliciousLevel)

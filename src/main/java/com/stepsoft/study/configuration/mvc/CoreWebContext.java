@@ -11,14 +11,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import java.util.List;
 
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.MVC_CONTROLLER_PACKAGE;
-
 /**
  * @author Eugene Stepanenkov
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = MVC_CONTROLLER_PACKAGE)
+@ComponentScan(basePackages = "com.stepsoft.study.mvc.controller")
 public class CoreWebContext extends WebMvcConfigurerAdapter {
 
     @Autowired
