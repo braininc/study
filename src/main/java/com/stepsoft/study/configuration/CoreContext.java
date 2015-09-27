@@ -1,6 +1,7 @@
 package com.stepsoft.study.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stepsoft.study.configuration.flow.FlowContext;
 import com.stepsoft.study.configuration.mvc.CoreWebContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,7 @@ import org.springframework.context.annotation.Import;
  * @author Eugene Stepanenkov
  */
 @Configuration
-@Import(CoreWebContext.class)
+@Import({CoreWebContext.class, FlowContext.class})
 public class CoreContext {
 
     @Bean

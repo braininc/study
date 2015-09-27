@@ -6,15 +6,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 /**
  * @author Eugene Stepanenkov
  */
-public class Sinner {
+public class Sinner implements RestModel {
 
     private Long id;
     private String userName;
     private Karma karma;
-
-    public Long getId() {
-        return id;
-    }
 
     public void setId(Long id) {
         this.id = id;
@@ -34,6 +30,11 @@ public class Sinner {
 
     public void setKarma(Karma karma) {
         this.karma = karma;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
     @Override

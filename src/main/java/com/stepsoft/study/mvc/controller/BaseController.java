@@ -1,5 +1,6 @@
 package com.stepsoft.study.mvc.controller;
 
+import com.stepsoft.study.mvc.model.RestModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 /**
  * @author Eugene Stepanenkov
  */
-public abstract class BaseController<M> {
+public abstract class BaseController<M extends RestModel> {
 
     private static final String BULK = "BULK";
 

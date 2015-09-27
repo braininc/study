@@ -14,6 +14,7 @@ repositories {
 ext {
 
     springVersion = '4.2.1.RELEASE'
+    springIntegrationVersion = '4.2.0.RELEASE'
     groovyVersion = '2.4.5'
     jacksonVersion = '2.6.2'
     jUnitVersion = '4.12'
@@ -22,6 +23,8 @@ ext {
     servletVersion = '3.1.0'
     commonsCollectionsVersion = '4.0'
     commonsVersion = '3.4'
+    hibernateVersion = '5.0.1.Final'
+    hibernateAnnotationVersion = '3.5.6-Final'
 
 }
 
@@ -42,6 +45,17 @@ dependencies {
             [group: 'org.springframework', name: 'spring-web', version: springVersion],
             [group: 'org.springframework', name: 'spring-webmvc', version: springVersion],
             [group: 'org.springframework', name: 'spring-context-support', version: springVersion],
+            [group: 'org.springframework', name: 'spring-context-support', version: springVersion],
+
+            // Spring Integration
+            [group: 'org.springframework.integration', name: 'spring-integration-core', version: springIntegrationVersion],
+            [group: 'org.springframework.integration', name: 'spring-integration-jdbc', version: springIntegrationVersion],
+            [group: 'org.springframework.integration', name: 'spring-integration-mail', version: springIntegrationVersion],
+            [group: 'org.springframework.integration', name: 'spring-integration-jpa', version: springIntegrationVersion],
+
+            [group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion],
+            [group: 'org.hibernate', name: 'hibernate-entitymanager', version: hibernateVersion],
+            [group: 'org.hibernate', name: 'hibernate-annotations', version: hibernateAnnotationVersion],
 
             // Apache Commons Collections
             [group: 'org.apache.commons', name: 'commons-collections4', version: commonsCollectionsVersion],

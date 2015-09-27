@@ -6,17 +6,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 /**
  * @author Eugene Stepanenkov
  */
-public class Karma {
+public class Karma implements RestModel {
 
     private Long id;
     private Integer drunkBottles;
     private Integer foulLanguageTimes;
     private Integer maliciousLevel;
     private Boolean seenBlasphemy;
-
-    public Long getId() {
-        return id;
-    }
 
     public void setId(Long id) {
         this.id = id;
@@ -52,6 +48,11 @@ public class Karma {
 
     public void setSeenBlasphemy(Boolean seenBlasphemy) {
         this.seenBlasphemy = seenBlasphemy;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
     @Override
