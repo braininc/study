@@ -16,7 +16,7 @@ import static com.stepsoft.study.data.utils.EntityConstants.SINNER_ID;
  * @author Eugene Stepanenkov
  */
 @Entity
-public class Karma implements DbModel {
+public class Karma implements DbDto {
 
     @Id
     @GeneratedValue

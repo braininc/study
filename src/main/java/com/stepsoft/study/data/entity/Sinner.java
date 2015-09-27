@@ -16,7 +16,7 @@ import static javax.persistence.CascadeType.REMOVE;
  * @author Eugene Stepanenkov
  */
 @Entity
-public class Sinner implements DbModel {
+public class Sinner implements DbDto {
 
     @Id
     @GeneratedValue
