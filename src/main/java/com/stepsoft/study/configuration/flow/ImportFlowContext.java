@@ -6,21 +6,18 @@ import com.stepsoft.study.flow.messaging.ImportAction;
 import com.stepsoft.study.mvc.model.RestModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.Aggregator;
 import org.springframework.integration.annotation.BridgeFrom;
 import org.springframework.integration.annotation.BridgeTo;
 import org.springframework.integration.annotation.CorrelationStrategy;
-import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ReleaseStrategy;
 import org.springframework.integration.annotation.Router;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.annotation.Splitter;
 import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.jpa.core.JpaExecutor;
 import org.springframework.integration.jpa.outbound.JpaOutboundGateway;
 import org.springframework.integration.splitter.DefaultMessageSplitter;
@@ -52,16 +49,7 @@ import static org.springframework.integration.jpa.support.OutboundGatewayType.UP
  * @author Eugene Stepanenkov
  */
 @Configuration
-@EnableIntegration
-@IntegrationComponentScan(basePackages = {
-        "com.stepsoft.study.flow",
-        "com.stepsoft.study.configuration.flow"
-})
-@ComponentScan(basePackages = {
-        "com.stepsoft.study.flow",
-        "com.stepsoft.study.configuration.flow"
-})
-@Import({DataContext.class, ImportChannelContext.class})
+@Import(ImportChannelContext.class)
 public class ImportFlowContext {
 
     @MessageEndpoint
@@ -161,6 +149,18 @@ public class ImportFlowContext {
         return gateway;
     }
 
+    @Bean
+    @Autowired
+    @JpaGateway(inputChannel = IN_IMPORT_DELETE_DB_CHANNEL)
+    public JpaOutboundGateway inImportDeleteDbGateway(JpaExecutor importDeleteJpaExecutor) {
+
+        JpaOutboundGateway gateway = new JpaOutboundGateway(importDeleteJpaExecutor);
+        gateway.setOutputChannelName(OUT_IMPORT_DB_CHANNEL);
+        gateway.setGatewayType(UPDATING);
+
+        return gateway;
+    }
+
     @MessageEndpoint
     public static class OutImportDbRouterEndpoint {
 
@@ -176,18 +176,6 @@ public class ImportFlowContext {
                     return OUT_IMPORT_CHANNEL;
             }
         }
-    }
-
-    @Bean
-    @Autowired
-    @JpaGateway(inputChannel = IN_IMPORT_DELETE_DB_CHANNEL)
-    public JpaOutboundGateway inImportDeleteDbGateway(JpaExecutor importDeleteJpaExecutor) {
-
-        JpaOutboundGateway gateway = new JpaOutboundGateway(importDeleteJpaExecutor);
-        gateway.setOutputChannelName(OUT_IMPORT_DB_CHANNEL);
-        gateway.setGatewayType(UPDATING);
-
-        return gateway;
     }
 
     @MessageEndpoint

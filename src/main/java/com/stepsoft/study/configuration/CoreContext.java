@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  * @author Eugene Stepanenkov
  */
 @Configuration
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:app.properties")
 @Import({CoreWebContext.class, FlowContext.class})
 public class CoreContext {
 
