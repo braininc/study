@@ -7,13 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.integration.annotation.IntegrationComponentScan;
-import org.springframework.integration.channel.PublishSubscribeChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.springframework.integration.context.IntegrationContextUtils.ERROR_CHANNEL_BEAN_NAME;
 import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_POLLER;
 
 /**
@@ -52,11 +50,5 @@ public class FlowContext {
         pollerMetadata.setMaxMessagesPerPoll(maxMessagesPerPoll);
 
         return pollerMetadata;
-    }
-
-    @Bean(name = ERROR_CHANNEL_BEAN_NAME)
-    public PublishSubscribeChannel errorChannel() {
-
-        return new PublishSubscribeChannel();
     }
 }

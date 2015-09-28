@@ -1,9 +1,11 @@
 package com.stepsoft.study.configuration.flow;
 
 import com.stepsoft.study.configuration.annotation.JpaGateway;
+import com.stepsoft.study.data.entity.DbDto;
 import com.stepsoft.study.data.entity.Sinner;
 import com.stepsoft.study.flow.ProcessingService;
 import com.stepsoft.study.flow.messaging.ImportAction;
+import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,7 @@ import org.springframework.integration.annotation.ReleaseStrategy;
 import org.springframework.integration.annotation.Router;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.annotation.Splitter;
+import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.jpa.core.JpaExecutor;
 import org.springframework.integration.jpa.outbound.JpaOutboundGateway;
@@ -37,10 +40,13 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_FETCH_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_PROCESSING_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_SPLITTER_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMER_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IS_TRANSFORMED_TO_DB_DTO;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_AGGREGATOR_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_PROCESSING_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_TRANSFORMER_CHANNEL;
 import static java.lang.Integer.parseInt;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.RETRIEVING;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.UPDATING;
@@ -56,7 +62,12 @@ public class ImportFlowContext {
     public static class InImportRouterEndpoint {
 
         @Router(inputChannel = IN_IMPORT_CHANNEL)
-        public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
+        public String route(@Header(name = IMPORT_ACTION) ImportAction action,
+                            @Header(name = IS_TRANSFORMED_TO_DB_DTO, required = false) Boolean isTransformedToDbDto) {
+
+            if (isTransformedToDbDto == null || !isTransformedToDbDto) {
+                return IN_IMPORT_TRANSFORMER_CHANNEL;
+            }
 
             switch (action) {
 
@@ -66,6 +77,17 @@ public class ImportFlowContext {
                 default:
                     return IN_IMPORT_DB_CHANNEL;
             }
+        }
+    }
+
+    @MessageEndpoint
+    public static class InImportTransformerEndpoint {
+
+        @Transformer(inputChannel = IN_IMPORT_TRANSFORMER_CHANNEL, outputChannel = IN_IMPORT_CHANNEL)
+        public Message<DbDto> transform(Message<DbDto> message) {
+
+            message.getHeaders().put(IS_TRANSFORMED_TO_DB_DTO, true);
+            return message;
         }
     }
 
@@ -146,6 +168,7 @@ public class ImportFlowContext {
         JpaOutboundGateway gateway = new JpaOutboundGateway(importFetchJpaExecutor);
         gateway.setOutputChannelName(OUT_IMPORT_DB_CHANNEL);
         gateway.setGatewayType(RETRIEVING);
+        gateway.setRequiresReply(true);
 
         return gateway;
     }
@@ -166,7 +189,13 @@ public class ImportFlowContext {
     public static class OutImportDbRouterEndpoint {
 
         @Router(inputChannel = OUT_IMPORT_DB_CHANNEL)
-        public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
+        public String route(@Header(name = IMPORT_ACTION) ImportAction action,
+                            @Header(name = IS_TRANSFORMED_TO_DB_DTO) Boolean isTransformedToDbDto) {
+
+            if (isTransformedToDbDto != null && isTransformedToDbDto) {
+
+                return OUT_IMPORT_TRANSFORMER_CHANNEL;
+            }
 
             switch (action) {
 
@@ -176,6 +205,17 @@ public class ImportFlowContext {
                 default:
                     return OUT_IMPORT_CHANNEL;
             }
+        }
+    }
+
+    @MessageEndpoint
+    public static class OutImportTransformerEndpoint {
+
+        @Transformer(inputChannel = OUT_IMPORT_TRANSFORMER_CHANNEL, outputChannel = OUT_IMPORT_DB_CHANNEL)
+        public Message<SinnerModel> transform(Message<SinnerModel> message) {
+
+            message.getHeaders().put(IS_TRANSFORMED_TO_DB_DTO, false);
+            return message;
         }
     }
 
@@ -200,6 +240,5 @@ public class ImportFlowContext {
 
             return bulkSize;
         }
-
     }
 }

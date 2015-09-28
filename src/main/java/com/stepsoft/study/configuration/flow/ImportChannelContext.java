@@ -11,10 +11,12 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_FETCH_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_PROCESSING_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_SPLITTER_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_AGGREGATOR_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_PROCESSING_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_TRANSFORMER_CHANNEL;
 
 /**
  * @author Eugene Stepanenkov
@@ -24,6 +26,12 @@ public class ImportChannelContext {
 
     @Bean(name = IN_IMPORT_CHANNEL)
     public QueueChannel inImportChannel() {
+
+        return new QueueChannel();
+    }
+
+    @Bean(name = IN_IMPORT_TRANSFORMER_CHANNEL)
+    public QueueChannel inImportTransformerChannel() {
 
         return new QueueChannel();
     }
@@ -72,6 +80,12 @@ public class ImportChannelContext {
 
     @Bean(name = OUT_IMPORT_DB_CHANNEL)
     public QueueChannel outImportDbChannel() {
+
+        return new QueueChannel();
+    }
+
+    @Bean(name = OUT_IMPORT_TRANSFORMER_CHANNEL)
+    public QueueChannel outImportTransformerChannel() {
 
         return new QueueChannel();
     }
