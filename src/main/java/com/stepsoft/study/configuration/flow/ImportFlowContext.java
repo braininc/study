@@ -1,37 +1,26 @@
 package com.stepsoft.study.configuration.flow;
 
 import com.stepsoft.study.configuration.annotation.JpaGateway;
-import com.stepsoft.study.data.entity.DbDto;
 import com.stepsoft.study.data.entity.Sinner;
 import com.stepsoft.study.flow.ProcessingService;
 import com.stepsoft.study.flow.messaging.ImportAction;
-import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.integration.annotation.Aggregator;
 import org.springframework.integration.annotation.BridgeFrom;
 import org.springframework.integration.annotation.BridgeTo;
-import org.springframework.integration.annotation.CorrelationStrategy;
 import org.springframework.integration.annotation.MessageEndpoint;
-import org.springframework.integration.annotation.ReleaseStrategy;
 import org.springframework.integration.annotation.Router;
 import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.integration.annotation.Splitter;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.jpa.core.JpaExecutor;
 import org.springframework.integration.jpa.outbound.JpaOutboundGateway;
-import org.springframework.integration.splitter.DefaultMessageSplitter;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.handler.annotation.Header;
 
-import java.util.List;
-import java.util.Set;
-
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.BULK_SIZE;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IMPORT_ACTION;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_CHANNEL;
@@ -39,15 +28,9 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_DELETE_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_FETCH_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_PROCESSING_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_SPLITTER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMER_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IS_TRANSFORMED_TO_DB_DTO;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_AGGREGATOR_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_PROCESSING_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_TRANSFORMER_CHANNEL;
-import static java.lang.Integer.parseInt;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.RETRIEVING;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.UPDATING;
 
@@ -62,20 +45,21 @@ public class ImportFlowContext {
     public static class InImportRouterEndpoint {
 
         @Router(inputChannel = IN_IMPORT_CHANNEL)
-        public String route(@Header(name = IMPORT_ACTION) ImportAction action,
-                            @Header(name = IS_TRANSFORMED_TO_DB_DTO, required = false) Boolean isTransformedToDbDto) {
-
-            if (isTransformedToDbDto == null || !isTransformedToDbDto) {
-                return IN_IMPORT_TRANSFORMER_CHANNEL;
-            }
+        public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
 
             switch (action) {
 
+                case DELETE:
+                case FETCH:
+                    return IN_IMPORT_DB_CHANNEL;
+
                 case ADD_BULK:
-                    return IN_IMPORT_SPLITTER_CHANNEL;
+                case ADD:
+                case UPDATE:
+                    return IN_IMPORT_TRANSFORMER_CHANNEL;
 
                 default:
-                    return IN_IMPORT_DB_CHANNEL;
+                    throw new IllegalStateException();
             }
         }
     }
@@ -83,22 +67,38 @@ public class ImportFlowContext {
     @MessageEndpoint
     public static class InImportTransformerEndpoint {
 
-        @Transformer(inputChannel = IN_IMPORT_TRANSFORMER_CHANNEL, outputChannel = IN_IMPORT_CHANNEL)
-        public Message<DbDto> transform(Message<DbDto> message) {
+        @Transformer(inputChannel = IN_IMPORT_TRANSFORMER_CHANNEL, outputChannel = IN_IMPORT_DB_CHANNEL)
+        public Sinner transform(Sinner sinner) {
 
-            message.getHeaders().put(IS_TRANSFORMED_TO_DB_DTO, true);
-            return message;
+            return sinner;
         }
     }
 
-    @Bean
-    @Splitter(inputChannel = IN_IMPORT_SPLITTER_CHANNEL)
-    public DefaultMessageSplitter inImportSplitter() {
+    @MessageEndpoint
+    public static class InImportDbRouterEndpoint {
 
-        DefaultMessageSplitter splitter = new DefaultMessageSplitter();
-        splitter.setOutputChannelName(IN_IMPORT_PROCESSING_CHANNEL);
+        @Router(inputChannel = IN_IMPORT_DB_CHANNEL)
+        public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
 
-        return splitter;
+            switch (action) {
+
+                case DELETE:
+                    return IN_IMPORT_DELETE_DB_CHANNEL;
+
+                case FETCH:
+                    return IN_IMPORT_FETCH_DB_CHANNEL;
+
+                case ADD:
+                case UPDATE:
+                    return IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL;
+
+                case ADD_BULK:
+                    return IN_IMPORT_PROCESSING_CHANNEL;
+
+                default:
+                    throw new IllegalStateException();
+            }
+        }
     }
 
     @MessageEndpoint
@@ -122,30 +122,10 @@ public class ImportFlowContext {
     }
 
     @Bean
-    @BridgeTo(IN_IMPORT_DB_CHANNEL)
+    @BridgeTo(IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL)
     public MessageChannel afterProcessingBridgeTo() {
 
         return new DirectChannel();
-    }
-
-    @MessageEndpoint
-    public static class InImportDbRouterEndpoint {
-
-        @Router(inputChannel = IN_IMPORT_DB_CHANNEL)
-        public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
-
-            switch (action) {
-
-                case DELETE:
-                    return IN_IMPORT_DELETE_DB_CHANNEL;
-
-                case FETCH:
-                    return IN_IMPORT_FETCH_DB_CHANNEL;
-
-                default:
-                    return IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL;
-            }
-        }
     }
 
     @Bean
@@ -189,25 +169,12 @@ public class ImportFlowContext {
     public static class OutImportDbRouterEndpoint {
 
         @Router(inputChannel = OUT_IMPORT_DB_CHANNEL)
-        public String route(@Header(name = IMPORT_ACTION) ImportAction action,
-                            @Header(name = IS_TRANSFORMED_TO_DB_DTO) Boolean isTransformedToDbDto) {
+        public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
 
-            if (isTransformedToDbDto != null && isTransformedToDbDto) {
-
-                return OUT_IMPORT_TRANSFORMER_CHANNEL;
-            }
-
-            switch (action) {
-
-                case ADD_BULK:
-                    return OUT_IMPORT_AGGREGATOR_CHANNEL;
-
-                default:
-                    return OUT_IMPORT_CHANNEL;
-            }
+            throw new IllegalArgumentException();
         }
     }
-
+/*
     @MessageEndpoint
     public static class OutImportTransformerEndpoint {
 
@@ -240,5 +207,5 @@ public class ImportFlowContext {
 
             return bulkSize;
         }
-    }
+    }*/
 }

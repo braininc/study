@@ -28,7 +28,7 @@ import static org.springframework.integration.jpa.support.PersistMode.DELETE;
  * @author Eugene Stepanenkov
  */
 @Configuration
-@EnableTransactionManagement
+@EnableTransactionManagement(proxyTargetClass = true)
 @PropertySource("classpath:db.properties")
 public class DataContext {
 
@@ -103,7 +103,7 @@ public class DataContext {
     @Autowired
     public JpaExecutor importAddOrUpdateJpaExecutor(EntityManagerFactory factory) {
 
-        JpaExecutor executor = new JpaExecutor(factory);
+        JpaExecutor executor = new JpaExecutor(factory.createEntityManager());
         executor.setEntityClass(Sinner.class);
 
         return executor;
@@ -113,7 +113,7 @@ public class DataContext {
     @Autowired
     public JpaExecutor importFetchJpaExecutor(EntityManagerFactory factory) {
 
-        JpaExecutor executor = new JpaExecutor(factory);
+        JpaExecutor executor = new JpaExecutor(factory.createEntityManager());
         executor.setEntityClass(Sinner.class);
         executor.setIdExpression(expressionParser.parseExpression("payload"));
         executor.setExpectSingleResult(true);
@@ -125,7 +125,7 @@ public class DataContext {
     @Autowired
     public JpaExecutor importDeleteJpaExecutor(EntityManagerFactory factory) {
 
-        JpaExecutor executor = new JpaExecutor(factory);
+        JpaExecutor executor = new JpaExecutor(factory.createEntityManager());
         executor.setEntityClass(Sinner.class);
         executor.setPersistMode(DELETE);
 

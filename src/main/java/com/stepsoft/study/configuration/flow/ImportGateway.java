@@ -4,6 +4,7 @@ import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.GatewayHeader;
 import org.springframework.integration.annotation.MessagingGateway;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -19,6 +20,7 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_
         defaultRequestChannel = IN_IMPORT_CHANNEL,
         defaultReplyChannel = OUT_IMPORT_CHANNEL
 )
+@Transactional
 public interface ImportGateway {
 
     @Gateway(headers = {

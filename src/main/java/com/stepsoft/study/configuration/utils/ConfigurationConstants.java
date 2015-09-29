@@ -23,7 +23,6 @@ public abstract class ConfigurationConstants {
     // Message header keys
     public static final String BULK_SIZE = "BULK_SIZE";
     public static final String IMPORT_ACTION = "IMPORT_ACTION";
-    public static final String IS_TRANSFORMED_TO_DB_DTO = "IS_TRANSFORMED_TO_DB_DTO";
 
     // MVC paths, mappings, headers, parameters
     public static final String BULK = "BULK";
