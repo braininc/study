@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.config.EnableIntegration;
+import org.springframework.integration.config.EnableIntegrationManagement;
 import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
@@ -19,6 +20,7 @@ import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_
  */
 @Configuration
 @EnableIntegration
+@EnableIntegrationManagement
 @IntegrationComponentScan(basePackages = {
         "com.stepsoft.study.flow",
         "com.stepsoft.study.configuration.flow",
