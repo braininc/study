@@ -8,11 +8,15 @@ import java.util.Set;
 /**
  * @author Eugene Stepanenkov
  */
-public class SinnerModel implements RestModel {
+public class SinnerModel {
 
     private Long id;
     private String userName;
     private Set<KarmaModel> karmas;
+
+    public Long getId() {
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -32,11 +36,6 @@ public class SinnerModel implements RestModel {
 
     public void setKarmas(Set<KarmaModel> karmas) {
         this.karmas = karmas;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
     }
 
     @Override

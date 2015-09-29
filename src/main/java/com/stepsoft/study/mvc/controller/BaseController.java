@@ -1,21 +1,15 @@
 package com.stepsoft.study.mvc.controller;
 
-import com.stepsoft.study.mvc.model.RestModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.integration.handler.ReplyRequiredException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Set;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.BULK;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toSet;
-import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -27,7 +21,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 /**
  * @author Eugene Stepanenkov
  */
-public abstract class BaseController<M extends RestModel> {
+public abstract class BaseController<M> {
 
     protected abstract Long add(M model);
 
@@ -38,14 +32,6 @@ public abstract class BaseController<M extends RestModel> {
     protected abstract void remove(Long id);
 
     protected abstract M find(Long id);
-
-    @ExceptionHandler(UnsupportedOperationException.class)
-    @ResponseStatus(METHOD_NOT_ALLOWED)
-    public void handle405() { }
-
-    @ExceptionHandler(ReplyRequiredException.class)
-    @ResponseStatus(NOT_FOUND)
-    public void handle404() { }
 
     @RequestMapping(method = POST)
     public ResponseEntity<?> post(@RequestBody M model) {

@@ -16,7 +16,7 @@ import static com.stepsoft.study.data.utils.EntityConstants.SINNER_ID;
  * @author Eugene Stepanenkov
  */
 @Entity
-public class Karma implements DbDto {
+public class Karma {
 
     @Id
     @GeneratedValue
@@ -30,12 +30,23 @@ public class Karma implements DbDto {
     private Sinner sinner;
 
     private Integer drunkBottles;
-    private Integer foulLanguageTimes;
     private Integer maliciousLevel;
     private Boolean seenBlasphemy;
 
+    public Long getId() {
+        return id;
+    }
+
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getSinnerId() {
+        return sinnerId;
+    }
+
+    public void setSinnerId(Long sinnerId) {
+        this.sinnerId = sinnerId;
     }
 
     public Sinner getSinner() {
@@ -52,14 +63,6 @@ public class Karma implements DbDto {
 
     public void setDrunkBottles(Integer drunkBottles) {
         this.drunkBottles = drunkBottles;
-    }
-
-    public Integer getFoulLanguageTimes() {
-        return foulLanguageTimes;
-    }
-
-    public void setFoulLanguageTimes(Integer foulLanguageTimes) {
-        this.foulLanguageTimes = foulLanguageTimes;
     }
 
     public Integer getMaliciousLevel() {
@@ -79,11 +82,6 @@ public class Karma implements DbDto {
     }
 
     @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -94,9 +92,9 @@ public class Karma implements DbDto {
 
         return new EqualsBuilder()
                 .append(id, karma.id)
+                .append(sinnerId, karma.sinnerId)
                 .append(sinner, karma.sinner)
                 .append(drunkBottles, karma.drunkBottles)
-                .append(foulLanguageTimes, karma.foulLanguageTimes)
                 .append(maliciousLevel, karma.maliciousLevel)
                 .append(seenBlasphemy, karma.seenBlasphemy)
                 .isEquals();
@@ -107,9 +105,9 @@ public class Karma implements DbDto {
 
         return new HashCodeBuilder(17, 37)
                 .append(id)
+                .append(sinnerId)
                 .append(sinner)
                 .append(drunkBottles)
-                .append(foulLanguageTimes)
                 .append(maliciousLevel)
                 .append(seenBlasphemy)
                 .toHashCode();

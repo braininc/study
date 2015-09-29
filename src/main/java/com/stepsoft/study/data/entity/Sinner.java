@@ -16,7 +16,7 @@ import static javax.persistence.CascadeType.ALL;
  * @author Eugene Stepanenkov
  */
 @Entity
-public class Sinner implements DbDto {
+public class Sinner {
 
     @Id
     @GeneratedValue
@@ -26,6 +26,10 @@ public class Sinner implements DbDto {
     private Set<Karma> karmas;
 
     private String userName;
+
+    public Long getId() {
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -45,11 +49,6 @@ public class Sinner implements DbDto {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
     }
 
     @Override
