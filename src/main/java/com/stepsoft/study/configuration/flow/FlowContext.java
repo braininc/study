@@ -10,8 +10,11 @@ import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.config.EnableIntegrationManagement;
 import org.springframework.integration.scheduling.PollerMetadata;
+import org.springframework.integration.support.management.DefaultMetricsFactory;
+import org.springframework.integration.support.management.MetricsFactory;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.FLOW_METRICS_FACTORY;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_POLLER;
 
@@ -20,7 +23,14 @@ import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_
  */
 @Configuration
 @EnableIntegration
-@EnableIntegrationManagement
+@EnableIntegrationManagement(
+        defaultLoggingEnabled = "${flow.monitoring.loggingEnabled}",
+        defaultCountsEnabled = "${flow.monitoring.countsEnabled}",
+        defaultStatsEnabled = "${flow.monitoring.statsEnabled}",
+        countsEnabled = "${flow.monitoring.countsPatterns}",
+        statsEnabled = "${flow.monitoring.statsPatterns}",
+        metricsFactory = FLOW_METRICS_FACTORY
+)
 @IntegrationComponentScan(basePackages = {
         "com.stepsoft.study.flow",
         "com.stepsoft.study.configuration.flow",
@@ -52,5 +62,11 @@ public class FlowContext {
         pollerMetadata.setMaxMessagesPerPoll(maxMessagesPerPoll);
 
         return pollerMetadata;
+    }
+
+    @Bean(name = FLOW_METRICS_FACTORY)
+    public MetricsFactory flowMetricsFactory() {
+
+        return new DefaultMetricsFactory();
     }
 }

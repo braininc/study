@@ -27,7 +27,7 @@ ext {
     hibernateCommonVersion = '5.0.0.Final'
     hibernatePersistenceVersion = '1.0.0.Final'
     mySqlVersion = '5.1.36'
-    slf4jVersion = '1.7.12'
+    log4jVersion = '2.4'
 
 }
 
@@ -48,23 +48,23 @@ dependencies {
             [group: 'org.springframework', name: 'spring-web', version: springVersion],
             [group: 'org.springframework', name: 'spring-webmvc', version: springVersion],
             [group: 'org.springframework', name: 'spring-context-support', version: springVersion],
-            [group: 'org.springframework', name: 'spring-context-support', version: springVersion],
 
             // Spring Integration
             [group: 'org.springframework.integration', name: 'spring-integration-core', version: springIntegrationVersion],
             [group: 'org.springframework.integration', name: 'spring-integration-jdbc', version: springIntegrationVersion],
             [group: 'org.springframework.integration', name: 'spring-integration-mail', version: springIntegrationVersion],
             [group: 'org.springframework.integration', name: 'spring-integration-jpa', version: springIntegrationVersion],
+            [group: 'org.springframework.integration', name: 'spring-integration-jmx', version: springIntegrationVersion],
+            [group: 'org.springframework.integration', name: 'spring-integration-event', version: springIntegrationVersion],
 
             [group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion],
-            [group: 'org.hibernate', name: 'hibernate-entitymanager', version: hibernateVersion],
-            [group: 'org.hibernate.common', name: 'hibernate-commons-annotations', version: hibernateCommonVersion],
-            [group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: hibernatePersistenceVersion],
 
             // Apache Commons Collections
             [group: 'org.apache.commons', name: 'commons-collections4', version: commonsCollectionsVersion],
-            [group: 'org.apache.commons', name: 'commons-lang3', version: commonsVersion]
+            [group: 'org.apache.commons', name: 'commons-lang3', version: commonsVersion],
 
+            // Apache log4j
+            [group: 'org.apache.logging.log4j', name: 'log4j', version: log4jVersion]
     )
 
     providedCompile(
@@ -88,10 +88,7 @@ dependencies {
     runtime(
 
             // MySql Connector
-            [group: 'mysql', name: 'mysql-connector-java', version: mySqlVersion],
-
-            // SLF4J + Log4J
-            [group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion]
+            [group: 'mysql', name: 'mysql-connector-java', version: mySqlVersion]
     )
 
 }

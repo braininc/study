@@ -20,6 +20,9 @@ public abstract class ConfigurationConstants {
     public static final String OUT_IMPORT_AGGREGATOR_CHANNEL = "outImportAggregatorChannel";
     public static final String OUT_IMPORT_PROCESSING_CHANNEL = "outImportProcessingChannel";
 
+    // Bean names
+    public static final String FLOW_METRICS_FACTORY = "flowMetricsFactory";
+
     // Message header keys
     public static final String BULK_SIZE = "BULK_SIZE";
     public static final String IMPORT_ACTION = "IMPORT_ACTION";
@@ -27,10 +30,6 @@ public abstract class ConfigurationConstants {
     // MVC paths, mappings, headers, parameters
     public static final String BULK = "BULK";
     public static final String SINNERS = "/sinners";
-
-    // Others...
-    public static final String HIBERNATE_DIALECT_PROPERTY_KEY = "hibernate.dialect";
-    public static final String HIBERNATE_SHOW_SQL_PROPERTY_KEY = "hibernate.show_sql";
 
     private ConfigurationConstants() {
     }

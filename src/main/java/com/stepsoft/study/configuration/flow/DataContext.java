@@ -20,8 +20,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.HIBERNATE_DIALECT_PROPERTY_KEY;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.HIBERNATE_SHOW_SQL_PROPERTY_KEY;
+import static org.hibernate.cfg.AvailableSettings.DIALECT;
+import static org.hibernate.cfg.AvailableSettings.FORMAT_SQL;
+import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
+import static org.hibernate.cfg.AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS;
 import static org.springframework.integration.jpa.support.PersistMode.DELETE;
 
 /**
@@ -50,6 +52,12 @@ public class DataContext {
     @Value("${db.hibernate.showSql}")
     private String showSql;
 
+    @Value("${db.hibernate.formatSql}")
+    private String formatSql;
+
+    @Value("${db.hibernate.useNewIdGeneratorMappings}")
+    private String useNewIdGenerator;
+
     @Autowired
     private ExpressionParser expressionParser;
 
@@ -57,8 +65,10 @@ public class DataContext {
     public Properties vendorProperties() {
 
         Properties properties = new Properties();
-        properties.setProperty(HIBERNATE_DIALECT_PROPERTY_KEY, dialect);
-        properties.setProperty(HIBERNATE_SHOW_SQL_PROPERTY_KEY, showSql);
+        properties.setProperty(DIALECT, dialect);
+        properties.setProperty(SHOW_SQL, showSql);
+        properties.setProperty(FORMAT_SQL, formatSql);
+        properties.setProperty(USE_NEW_ID_GENERATOR_MAPPINGS, useNewIdGenerator);
 
         return properties;
     }
