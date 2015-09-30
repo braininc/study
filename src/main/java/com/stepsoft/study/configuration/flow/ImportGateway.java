@@ -49,7 +49,7 @@ public interface ImportGateway {
                     expression = "T(com.stepsoft.study.flow.messaging.ImportAction).UPDATE"
             )
     })
-    void modify(SinnerModel sinner);
+    boolean modify(SinnerModel sinner);
 
     @Gateway(headers = {
             @GatewayHeader(
@@ -57,7 +57,7 @@ public interface ImportGateway {
                     expression = "T(com.stepsoft.study.flow.messaging.ImportAction).DELETE"
             )
     })
-    void remove(Long id);
+    boolean remove(Long id);
 
     @Gateway(headers = {
             @GatewayHeader(

@@ -9,13 +9,11 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_DELETE_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_FETCH_DB_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_PROCESSING_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_SPLITTER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_AGGREGATOR_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_PROCESSING_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_TRANSFORMER_CHANNEL;
 
 /**
@@ -66,12 +64,6 @@ public class ImportChannelContext {
         return new QueueChannel();
     }
 
-    @Bean(name = IN_IMPORT_PROCESSING_CHANNEL)
-    public QueueChannel inImportProcessingChannel() {
-
-        return new QueueChannel();
-    }
-
     @Bean(name = OUT_IMPORT_CHANNEL)
     public QueueChannel outImportChannel() {
 
@@ -92,12 +84,6 @@ public class ImportChannelContext {
 
     @Bean(name = OUT_IMPORT_AGGREGATOR_CHANNEL)
     public QueueChannel outImportAggregatorChannel() {
-
-        return new QueueChannel();
-    }
-
-    @Bean(name = OUT_IMPORT_PROCESSING_CHANNEL)
-    public QueueChannel outImportProcessingChannel() {
 
         return new QueueChannel();
     }

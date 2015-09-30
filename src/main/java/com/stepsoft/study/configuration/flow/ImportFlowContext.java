@@ -2,23 +2,16 @@ package com.stepsoft.study.configuration.flow;
 
 import com.stepsoft.study.configuration.annotation.JpaGateway;
 import com.stepsoft.study.data.entity.Sinner;
-import com.stepsoft.study.flow.ProcessingService;
 import com.stepsoft.study.flow.messaging.ImportAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.integration.annotation.BridgeFrom;
-import org.springframework.integration.annotation.BridgeTo;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.Router;
-import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.annotation.Transformer;
-import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.jpa.core.JpaExecutor;
 import org.springframework.integration.jpa.outbound.JpaOutboundGateway;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.handler.annotation.Header;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IMPORT_ACTION;
@@ -27,10 +20,9 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_DELETE_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_FETCH_DB_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_PROCESSING_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMER_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_PROCESSING_CHANNEL;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.RETRIEVING;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.UPDATING;
 
@@ -89,43 +81,14 @@ public class ImportFlowContext {
                     return IN_IMPORT_FETCH_DB_CHANNEL;
 
                 case ADD:
+                case ADD_BULK:
                 case UPDATE:
                     return IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL;
-
-                case ADD_BULK:
-                    return IN_IMPORT_PROCESSING_CHANNEL;
 
                 default:
                     throw new IllegalStateException();
             }
         }
-    }
-
-    @MessageEndpoint
-    public static class ProcessingServiceEndpoint {
-
-        @Autowired
-        private ProcessingService serviceActivator;
-
-        @ServiceActivator(inputChannel = IN_IMPORT_PROCESSING_CHANNEL, outputChannel = OUT_IMPORT_PROCESSING_CHANNEL)
-        public Message<Sinner> serviceMethod(Message<Sinner> message) {
-
-            return serviceActivator.service(message);
-        }
-    }
-
-    @Bean
-    @BridgeFrom(OUT_IMPORT_PROCESSING_CHANNEL)
-    public MessageChannel afterProcessingBridgeFrom() {
-
-        return new DirectChannel();
-    }
-
-    @Bean
-    @BridgeTo(IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL)
-    public MessageChannel afterProcessingBridgeTo() {
-
-        return new DirectChannel();
     }
 
     @Bean
@@ -171,7 +134,13 @@ public class ImportFlowContext {
         @Router(inputChannel = OUT_IMPORT_DB_CHANNEL)
         public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
 
-            throw new IllegalArgumentException();
+            switch (action) {
+
+                case FETCH:
+                    return OUT_IMPORT_CHANNEL;
+                default:
+                    throw new IllegalStateException();
+            }
         }
     }
 /*
