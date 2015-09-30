@@ -1,6 +1,7 @@
 package com.stepsoft.study.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stepsoft.study.configuration.flow.CoreDataContext;
 import com.stepsoft.study.configuration.flow.FlowContext;
 import com.stepsoft.study.configuration.mvc.CoreWebContext;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,11 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  */
 @Configuration
 @PropertySource("classpath:app.properties")
-@Import({CoreWebContext.class, FlowContext.class})
+@Import({
+        CoreWebContext.class,
+        FlowContext.class,
+        CoreDataContext.class
+})
 public class CoreContext {
 
     @Bean

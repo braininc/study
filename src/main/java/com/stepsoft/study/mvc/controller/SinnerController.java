@@ -1,7 +1,7 @@
 package com.stepsoft.study.mvc.controller;
 
-import com.stepsoft.study.configuration.flow.ImportGateway;
 import com.stepsoft.study.mvc.model.SinnerModel;
+import com.stepsoft.study.mvc.service.ImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,35 +19,35 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class SinnerController extends BaseController<SinnerModel> {
 
     @Autowired
-    private ImportGateway importGateway;
+    private ImportService importService;
 
     @Override
     protected Long add(SinnerModel sinnerModel) {
 
-        return importGateway.add(sinnerModel);
+        return importService.add(sinnerModel);
     }
 
     @Override
     protected Set<Long> add(Set<SinnerModel> sinnerModels) {
 
-        return importGateway.add(sinnerModels);
+        return importService.add(sinnerModels);
     }
 
     @Override
     protected void modify(SinnerModel sinnerModel) {
 
-        importGateway.modify(sinnerModel);
+        importService.modify(sinnerModel);
     }
 
     @Override
     protected void remove(Long id) {
 
-        importGateway.remove(id);
+        importService.remove(id);
     }
 
     @Override
     protected SinnerModel find(Long id) {
 
-        return importGateway.find(id);
+        return importService.find(id);
     }
 }

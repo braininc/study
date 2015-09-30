@@ -18,7 +18,6 @@ CREATE TABLE karma (
   id                INT AUTO_INCREMENT NOT NULL,
   sinner_id         INT                NOT NULL,
   drunkBottles      INT                NOT NULL,
-  foulLanguageTimes INT                NOT NULL,
   maliciousLevel    INT                NOT NULL,
   seenBlasphemy     BOOLEAN,
   PRIMARY KEY (id),

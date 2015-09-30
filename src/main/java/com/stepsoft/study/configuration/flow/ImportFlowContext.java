@@ -1,6 +1,7 @@
 package com.stepsoft.study.configuration.flow;
 
 import com.stepsoft.study.configuration.annotation.JpaGateway;
+import com.stepsoft.study.configuration.annotation.MessageHeaderEnricher;
 import com.stepsoft.study.data.entity.Sinner;
 import com.stepsoft.study.flow.messaging.ImportAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.integration.annotation.Router;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.jpa.core.JpaExecutor;
 import org.springframework.integration.jpa.outbound.JpaOutboundGateway;
+import org.springframework.integration.transformer.HeaderEnricher;
+import org.springframework.integration.transformer.support.StaticHeaderValueMessageProcessor;
 import org.springframework.messaging.handler.annotation.Header;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IMPORT_ACTION;
@@ -20,9 +23,13 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_DELETE_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_FETCH_DB_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMER_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_POST_PERSIST_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_PRE_PERSIST_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMATION_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IS_PERSISTED;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
+import static java.util.Collections.singletonMap;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.RETRIEVING;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.UPDATING;
 
@@ -48,7 +55,7 @@ public class ImportFlowContext {
                 case ADD_BULK:
                 case ADD:
                 case UPDATE:
-                    return IN_IMPORT_TRANSFORMER_CHANNEL;
+                    return IN_IMPORT_TRANSFORMATION_CHANNEL;
 
                 default:
                     throw new IllegalStateException();
@@ -59,7 +66,7 @@ public class ImportFlowContext {
     @MessageEndpoint
     public static class InImportTransformerEndpoint {
 
-        @Transformer(inputChannel = IN_IMPORT_TRANSFORMER_CHANNEL, outputChannel = IN_IMPORT_DB_CHANNEL)
+        @Transformer(inputChannel = IN_IMPORT_TRANSFORMATION_CHANNEL, outputChannel = IN_IMPORT_DB_CHANNEL)
         public Sinner transform(Sinner sinner) {
 
             return sinner;
@@ -75,7 +82,7 @@ public class ImportFlowContext {
             switch (action) {
 
                 case DELETE:
-                    return IN_IMPORT_DELETE_DB_CHANNEL;
+                    return IN_IMPORT_PRE_PERSIST_CHANNEL;
 
                 case FETCH:
                     return IN_IMPORT_FETCH_DB_CHANNEL;
@@ -92,15 +99,21 @@ public class ImportFlowContext {
     }
 
     @Bean
-    @Autowired
-    @JpaGateway(inputChannel = IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL)
-    public JpaOutboundGateway inImportAddOrUpdateDbGateway(JpaExecutor importAddOrUpdateJpaExecutor) {
+    @MessageHeaderEnricher(inputChannel = IN_IMPORT_PRE_PERSIST_CHANNEL, outputChannel = IN_IMPORT_FETCH_DB_CHANNEL)
+    public HeaderEnricher inImportPrePersistHeaderEnricher() {
 
-        JpaOutboundGateway gateway = new JpaOutboundGateway(importAddOrUpdateJpaExecutor);
-        gateway.setOutputChannelName(OUT_IMPORT_DB_CHANNEL);
-        gateway.setGatewayType(UPDATING);
+        return new HeaderEnricher(singletonMap(IS_PERSISTED, new StaticHeaderValueMessageProcessor<>(false)));
+    }
 
-        return gateway;
+    @Bean
+    @MessageHeaderEnricher(inputChannel = IN_IMPORT_POST_PERSIST_CHANNEL, outputChannel = IN_IMPORT_DELETE_DB_CHANNEL)
+    public HeaderEnricher inImportPostPersistHeaderEnricher() {
+
+        HeaderEnricher enricher = new HeaderEnricher(
+                singletonMap(IS_PERSISTED, new StaticHeaderValueMessageProcessor<>(true)));
+        enricher.setDefaultOverwrite(true);
+
+        return enricher;
     }
 
     @Bean
@@ -128,53 +141,41 @@ public class ImportFlowContext {
         return gateway;
     }
 
+    @Bean
+    @Autowired
+    @JpaGateway(inputChannel = IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL)
+    public JpaOutboundGateway inImportAddOrUpdateDbGateway(JpaExecutor importAddOrUpdateJpaExecutor) {
+
+        JpaOutboundGateway gateway = new JpaOutboundGateway(importAddOrUpdateJpaExecutor);
+        gateway.setOutputChannelName(OUT_IMPORT_DB_CHANNEL);
+        gateway.setGatewayType(UPDATING);
+
+        return gateway;
+    }
+
     @MessageEndpoint
     public static class OutImportDbRouterEndpoint {
 
         @Router(inputChannel = OUT_IMPORT_DB_CHANNEL)
-        public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
+        public String route(@Header(name = IMPORT_ACTION) ImportAction action,
+                            @Header(name = IS_PERSISTED, required = false) Boolean isPersisted) {
 
             switch (action) {
 
+                case DELETE:
+                    if (isPersisted == null || !isPersisted) {
+                        return IN_IMPORT_POST_PERSIST_CHANNEL;
+                    }
+
                 case FETCH:
+                case ADD_BULK:
+                case ADD:
+                case UPDATE:
                     return OUT_IMPORT_CHANNEL;
+
                 default:
                     throw new IllegalStateException();
             }
         }
     }
-/*
-    @MessageEndpoint
-    public static class OutImportTransformerEndpoint {
-
-        @Transformer(inputChannel = OUT_IMPORT_TRANSFORMER_CHANNEL, outputChannel = OUT_IMPORT_DB_CHANNEL)
-        public Message<SinnerModel> transform(Message<SinnerModel> message) {
-
-            message.getHeaders().put(IS_TRANSFORMED_TO_DB_DTO, false);
-            return message;
-        }
-    }
-
-    @MessageEndpoint
-    public static class OutImportAggregatorEndpoint {
-
-        @Aggregator(inputChannel = OUT_IMPORT_AGGREGATOR_CHANNEL, outputChannel = OUT_IMPORT_CHANNEL)
-        public Set<Long> aggregate(Set<Long> ids) {
-
-            return ids;
-        }
-
-        @ReleaseStrategy
-        public boolean releaseStrategy(List<Message<Long>> messages) {
-
-            int bulkSize = parseInt((String) messages.get(0).getHeaders().get(BULK_SIZE));
-            return bulkSize == messages.size();
-        }
-
-        @CorrelationStrategy
-        public String correlationStrategy(@Header(name = BULK_SIZE) String bulkSize) {
-
-            return bulkSize;
-        }
-    }*/
 }

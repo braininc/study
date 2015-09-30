@@ -9,8 +9,10 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_DELETE_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_FETCH_DB_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_POST_PERSIST_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_PRE_PERSIST_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_SPLITTER_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMER_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMATION_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_AGGREGATOR_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
@@ -28,8 +30,8 @@ public class ImportChannelContext {
         return new QueueChannel();
     }
 
-    @Bean(name = IN_IMPORT_TRANSFORMER_CHANNEL)
-    public QueueChannel inImportTransformerChannel() {
+    @Bean(name = IN_IMPORT_TRANSFORMATION_CHANNEL)
+    public QueueChannel inImportTransformationChannel() {
 
         return new QueueChannel();
     }
@@ -60,6 +62,18 @@ public class ImportChannelContext {
 
     @Bean(name = IN_IMPORT_DELETE_DB_CHANNEL)
     public QueueChannel inImportDeleteDbChannel() {
+
+        return new QueueChannel();
+    }
+
+    @Bean(name = IN_IMPORT_PRE_PERSIST_CHANNEL)
+    public QueueChannel inImportPrePersistChannel() {
+
+        return new QueueChannel();
+    }
+
+    @Bean(name = IN_IMPORT_POST_PERSIST_CHANNEL)
+    public QueueChannel inImportPostPersistChannel() {
 
         return new QueueChannel();
     }

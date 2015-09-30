@@ -41,10 +41,7 @@ import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_
         "com.stepsoft.study.configuration.flow",
         "com.stepsoft.study.flow.messaging"
 })
-@Import({
-        DataContext.class,
-        ImportFlowContext.class
-})
+@Import({ImportFlowContext.class})
 @PropertySource("classpath:flow.properties")
 public class FlowContext {
 
