@@ -1,5 +1,9 @@
 package com.stepsoft.study.configuration.flow;
 
+import java.util.Properties;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+
 import com.stepsoft.study.data.entity.Sinner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,15 +16,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.support.SharedEntityManagerBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import java.util.Properties;
 
 import static org.hibernate.cfg.AvailableSettings.DIALECT;
 import static org.hibernate.cfg.AvailableSettings.FORMAT_SQL;
@@ -103,16 +101,6 @@ public class CoreDataContext {
 
     @Bean
     @Autowired
-    public SharedEntityManagerBean entityManager(EntityManagerFactory factory) {
-
-        SharedEntityManagerBean sharedEntityManagerBean = new SharedEntityManagerBean();
-        sharedEntityManagerBean.setEntityManagerFactory(factory);
-
-        return sharedEntityManagerBean;
-    }
-
-    @Bean
-    @Autowired
     public PlatformTransactionManager transactionManager(EntityManagerFactory factory) {
 
         JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -123,9 +111,9 @@ public class CoreDataContext {
 
     @Bean
     @Autowired
-    public JpaExecutor importAddOrUpdateJpaExecutor(EntityManager entityManager) {
+    public JpaExecutor importAddOrUpdateJpaExecutor(EntityManagerFactory factory) {
 
-        JpaExecutor executor = new JpaExecutor(entityManager);
+        JpaExecutor executor = new JpaExecutor(factory);
         executor.setEntityClass(Sinner.class);
 
         return executor;
@@ -133,9 +121,9 @@ public class CoreDataContext {
 
     @Bean
     @Autowired
-    public JpaExecutor importFetchJpaExecutor(EntityManager entityManager) {
+    public JpaExecutor importFetchJpaExecutor(EntityManagerFactory factory) {
 
-        JpaExecutor executor = new JpaExecutor(entityManager);
+        JpaExecutor executor = new JpaExecutor(factory);
         executor.setEntityClass(Sinner.class);
         executor.setIdExpression(expressionParser.parseExpression("payload"));
         executor.setExpectSingleResult(true);
@@ -145,9 +133,9 @@ public class CoreDataContext {
 
     @Bean
     @Autowired
-    public JpaExecutor importDeleteJpaExecutor(EntityManager entityManager) {
+    public JpaExecutor importDeleteJpaExecutor(EntityManagerFactory factory) {
 
-        JpaExecutor executor = new JpaExecutor(entityManager);
+        JpaExecutor executor = new JpaExecutor(factory);
         executor.setEntityClass(Sinner.class);
         executor.setPersistMode(DELETE);
         executor.setIdExpression(expressionParser.parseExpression("payload"));

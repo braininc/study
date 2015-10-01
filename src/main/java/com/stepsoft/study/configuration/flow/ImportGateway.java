@@ -1,12 +1,11 @@
 package com.stepsoft.study.configuration.flow;
 
+import java.util.Set;
+
 import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.GatewayHeader;
 import org.springframework.integration.annotation.MessagingGateway;
-import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.BULK_SIZE;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IMPORT_ACTION;
@@ -20,7 +19,6 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_
         defaultRequestChannel = IN_IMPORT_CHANNEL,
         defaultReplyChannel = OUT_IMPORT_CHANNEL
 )
-@Component
 public interface ImportGateway {
 
     @Gateway(headers = {
