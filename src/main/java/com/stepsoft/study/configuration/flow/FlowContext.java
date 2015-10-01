@@ -1,6 +1,5 @@
 package com.stepsoft.study.configuration.flow;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -58,23 +57,6 @@ public class FlowContext {
     private int maxMessagesPerPoll;
 
     @Bean(name = DEFAULT_POLLER)
-    public PollerMetadata defaultPoller() {
-
-        PollerMetadata pollerMetadata = new PollerMetadata();
-        pollerMetadata.setTrigger(new PeriodicTrigger(fixedDelay, MILLISECONDS));
-        pollerMetadata.setMaxMessagesPerPoll(maxMessagesPerPoll);
-
-        return pollerMetadata;
-    }
-
-    @Bean(name = FLOW_METRICS_FACTORY)
-    public MetricsFactory flowMetricsFactory() {
-
-        return new DefaultMetricsFactory();
-    }
-
-    @Autowired
-    @Bean(name = DEFAULT_POLLER + "777")
     public PollerMetadata defaultPoller(PlatformTransactionManager manager) {
 
         MatchAlwaysTransactionAttributeSource attributeSource = new MatchAlwaysTransactionAttributeSource();
@@ -87,5 +69,11 @@ public class FlowContext {
         pollerMetadata.setAdviceChain(singletonList(interceptor));
 
         return pollerMetadata;
+    }
+
+    @Bean(name = FLOW_METRICS_FACTORY)
+    public MetricsFactory flowMetricsFactory() {
+
+        return new DefaultMetricsFactory();
     }
 }

@@ -1,11 +1,11 @@
 package com.stepsoft.study.configuration.flow;
 
-import java.util.Set;
-
 import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.GatewayHeader;
 import org.springframework.integration.annotation.MessagingGateway;
+
+import java.util.Set;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.BULK_SIZE;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IMPORT_ACTION;
