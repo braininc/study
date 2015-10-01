@@ -57,7 +57,9 @@ dependencies {
             [group: 'org.springframework.integration', name: 'spring-integration-jmx', version: springIntegrationVersion],
             [group: 'org.springframework.integration', name: 'spring-integration-event', version: springIntegrationVersion],
 
+            // Hibernate
             [group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion],
+            [group: 'org.hibernate', name: 'hibernate-entitymanager', version: hibernateVersion],
 
             // Apache Commons Collections
             [group: 'org.apache.commons', name: 'commons-collections4', version: commonsCollectionsVersion],
