@@ -5,11 +5,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Set;
-
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.BULK;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toSet;
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -25,8 +20,6 @@ public abstract class BaseController<M> {
 
     protected abstract Long add(M model);
 
-    protected abstract Set<Long> add(Set<M> models);
-
     protected abstract void modify(M model);
 
     protected abstract void remove(Long id);
@@ -40,29 +33,6 @@ public abstract class BaseController<M> {
                 fromCurrentRequest()
                         .path("/{id}")
                         .buildAndExpand(add(model)).toUri())
-                .build();
-    }
-
-    @RequestMapping(method = POST, headers = BULK)
-    public ResponseEntity<?> post(@RequestBody M[] models) {
-
-        Set<M> modelsSet = stream(models).collect(toSet());
-        Set<Long> ids = add(modelsSet);
-        final StringBuilder idsString = new StringBuilder("{{");
-
-        ids.forEach(id -> {
-                    idsString.append(id);
-                    idsString.append(",");
-                }
-        );
-
-        idsString.deleteCharAt(idsString.length() - 1);
-        idsString.append("}}");
-
-        return created(
-                fromCurrentRequest()
-                        .path("/{ids}")
-                        .buildAndExpand(idsString).toUri())
                 .build();
     }
 

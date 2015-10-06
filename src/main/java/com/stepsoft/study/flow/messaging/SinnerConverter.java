@@ -54,11 +54,9 @@ public class SinnerConverter implements GenericConverter {
 
     private Sinner convert(SinnerModel sinnerModel) {
 
-        Sinner sinner = null;
-
         if (sinnerModel != null) {
 
-            sinner = new Sinner();
+            final Sinner sinner = new Sinner();
             sinner.setId(sinnerModel.getId());
             sinner.setUserName(sinnerModel.getUserName());
 
@@ -66,15 +64,23 @@ public class SinnerConverter implements GenericConverter {
 
                 Set<Karma> karmas = sinnerModel.getKarmas()
                         .stream()
-                        .map(karmaModel -> ((Karma) karmaConverter
-                                .convert(karmaModel, valueOf(KarmaModel.class), valueOf(Karma.class))))
+                        .map(karmaModel -> {
+
+                            Karma karma = ((Karma) karmaConverter
+                                    .convert(karmaModel, valueOf(KarmaModel.class), valueOf(Karma.class)));
+                            karma.setSinner(sinner);
+
+                            return karma;
+                        })
                         .collect(toSet());
 
                 sinner.setKarmas(karmas);
+
             }
+            return sinner;
         }
 
-        return sinner;
+        return null;
     }
 
     @Override

@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Set;
-
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.SINNERS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -25,12 +23,6 @@ public class SinnerController extends BaseController<SinnerModel> {
     protected Long add(SinnerModel sinnerModel) {
 
         return importService.add(sinnerModel);
-    }
-
-    @Override
-    protected Set<Long> add(Set<SinnerModel> sinnerModels) {
-
-        return importService.add(sinnerModels);
     }
 
     @Override

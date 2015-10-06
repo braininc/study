@@ -28,6 +28,7 @@ ext {
     hibernatePersistenceVersion = '1.0.0.Final'
     mySqlVersion = '5.1.36'
     log4jVersion = '2.4'
+    springBatchVersion = '3.0.5.RELEASE'
 
 }
 
@@ -56,6 +57,11 @@ dependencies {
             [group: 'org.springframework.integration', name: 'spring-integration-jpa', version: springIntegrationVersion],
             [group: 'org.springframework.integration', name: 'spring-integration-jmx', version: springIntegrationVersion],
             [group: 'org.springframework.integration', name: 'spring-integration-event', version: springIntegrationVersion],
+
+            // Spring Batch
+            [group: 'org.springframework.batch', name: 'spring-batch-core', version: springBatchVersion],
+            [group: 'org.springframework.batch', name: 'spring-batch-infrastructure', version: springBatchVersion],
+            [group: 'org.springframework.batch', name: 'spring-batch-integration', version: springBatchVersion],
 
             // Hibernate
             [group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion],

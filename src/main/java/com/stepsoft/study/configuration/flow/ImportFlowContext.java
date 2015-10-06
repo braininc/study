@@ -4,6 +4,7 @@ import com.stepsoft.study.configuration.annotation.JpaGateway;
 import com.stepsoft.study.configuration.annotation.MessageHeaderEnricher;
 import com.stepsoft.study.data.entity.Sinner;
 import com.stepsoft.study.flow.messaging.ImportAction;
+import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,7 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IS_PERSISTED;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_TRANSFORMER_CHANNEL;
 import static java.util.Collections.singletonMap;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.RETRIEVING;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.UPDATING;
@@ -52,7 +54,6 @@ public class ImportFlowContext {
                 case FETCH:
                     return IN_IMPORT_DB_CHANNEL;
 
-                case ADD_BULK:
                 case ADD:
                 case UPDATE:
                     return IN_IMPORT_TRANSFORMATION_CHANNEL;
@@ -88,7 +89,6 @@ public class ImportFlowContext {
                     return IN_IMPORT_FETCH_DB_CHANNEL;
 
                 case ADD:
-                case ADD_BULK:
                 case UPDATE:
                     return IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL;
 
@@ -168,14 +168,24 @@ public class ImportFlowContext {
                     }
 
                 case FETCH:
-                case ADD_BULK:
                 case ADD:
                 case UPDATE:
-                    return OUT_IMPORT_CHANNEL;
+                    return OUT_IMPORT_TRANSFORMER_CHANNEL;
 
                 default:
                     throw new IllegalStateException();
             }
+        }
+    }
+
+    @MessageEndpoint
+    public static class OutImportTransformerEndpoint {
+
+
+        @Transformer(inputChannel = OUT_IMPORT_TRANSFORMER_CHANNEL, outputChannel = OUT_IMPORT_CHANNEL)
+        public SinnerModel transform(SinnerModel sinnerModel) {
+
+            return sinnerModel;
         }
     }
 }

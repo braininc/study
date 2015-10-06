@@ -1,7 +1,5 @@
 package com.stepsoft.study.mvc.service;
 
-import java.util.Set;
-
 import com.stepsoft.study.configuration.flow.ImportGateway;
 import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +16,8 @@ public class ImportService {
 
     public Long add(SinnerModel sinnerModel) {
 
-        return gateway.add(sinnerModel);
-    }
-
-    public Set<Long> add(Set<SinnerModel> sinnerModels) {
-
-        return gateway.add(sinnerModels);
+        SinnerModel added = gateway.add(sinnerModel);
+        return added.getId();
     }
 
     public void modify(SinnerModel sinnerModel) {

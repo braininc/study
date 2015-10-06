@@ -2,7 +2,8 @@ package com.stepsoft.study.configuration.flow;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.channel.QueueChannel;
+import org.springframework.integration.channel.DirectChannel;
+import org.springframework.messaging.MessageChannel;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_CHANNEL;
@@ -13,7 +14,6 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_PRE_PERSIST_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_SPLITTER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMATION_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_AGGREGATOR_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_TRANSFORMER_CHANNEL;
@@ -25,80 +25,74 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_
 public class ImportChannelContext {
 
     @Bean(name = IN_IMPORT_CHANNEL)
-    public QueueChannel inImportChannel() {
+    public DirectChannel inImportChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = IN_IMPORT_TRANSFORMATION_CHANNEL)
-    public QueueChannel inImportTransformationChannel() {
+    public DirectChannel inImportTransformationChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = IN_IMPORT_DB_CHANNEL)
-    public QueueChannel inImportDbChannel() {
+    public DirectChannel inImportDbChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = IN_IMPORT_SPLITTER_CHANNEL)
-    public QueueChannel inImportSplitterChannel() {
+    public DirectChannel inImportSplitterChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL)
-    public QueueChannel inImportAddOrUpdateDbChannel() {
+    public DirectChannel inImportAddOrUpdateDbChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = IN_IMPORT_FETCH_DB_CHANNEL)
-    public QueueChannel inImportFetchDbChannel() {
+    public DirectChannel inImportFetchDbChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = IN_IMPORT_DELETE_DB_CHANNEL)
-    public QueueChannel inImportDeleteDbChannel() {
+    public DirectChannel inImportDeleteDbChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = IN_IMPORT_PRE_PERSIST_CHANNEL)
-    public QueueChannel inImportPrePersistChannel() {
+    public DirectChannel inImportPrePersistChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = IN_IMPORT_POST_PERSIST_CHANNEL)
-    public QueueChannel inImportPostPersistChannel() {
+    public DirectChannel inImportPostPersistChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = OUT_IMPORT_CHANNEL)
-    public QueueChannel outImportChannel() {
+    public DirectChannel outImportChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = OUT_IMPORT_DB_CHANNEL)
-    public QueueChannel outImportDbChannel() {
+    public MessageChannel outImportDbChannel() {
 
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
     @Bean(name = OUT_IMPORT_TRANSFORMER_CHANNEL)
-    public QueueChannel outImportTransformerChannel() {
+    public DirectChannel outImportTransformerChannel() {
 
-        return new QueueChannel();
-    }
-
-    @Bean(name = OUT_IMPORT_AGGREGATOR_CHANNEL)
-    public QueueChannel outImportAggregatorChannel() {
-
-        return new QueueChannel();
+        return new DirectChannel();
     }
 }

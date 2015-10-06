@@ -18,7 +18,7 @@ public abstract class ConfigurationConstants {
     public static final String OUT_IMPORT_CHANNEL = "outImportChannel";
     public static final String OUT_IMPORT_DB_CHANNEL = "outImportDbChannel";
     public static final String OUT_IMPORT_TRANSFORMER_CHANNEL = "outImportTransformerChannel";
-    public static final String OUT_IMPORT_AGGREGATOR_CHANNEL = "outImportAggregatorChannel";
+    public static final String IN_EXPORT_CHANNEL = "inExportChannel";
 
     // Bean names
     public static final String FLOW_METRICS_FACTORY = "flowMetricsFactory";
@@ -26,7 +26,7 @@ public abstract class ConfigurationConstants {
     // Message header keys
     public static final String IS_PERSISTED = "isPersisted";
     public static final String IMPORT_ACTION = "importAction";
-    public static final String BULK_SIZE = "bulkSize";
+    public static final String EXPORT_ACTION = "exportAction";
 
     // MVC paths, mappings, headers, parameters
     public static final String BULK = "bulk";

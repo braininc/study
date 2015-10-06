@@ -1,17 +1,18 @@
 package com.stepsoft.study.data.entity;
 
-import java.util.Set;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Set;
 
 import static com.stepsoft.study.data.utils.EntityConstants.SINNER;
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
 
 /**
  * @author Eugene Stepanenkov
@@ -23,7 +24,7 @@ public class Sinner {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = SINNER, cascade = ALL, fetch = EAGER)
+    @OneToMany(mappedBy = SINNER, cascade = {ALL, PERSIST, MERGE})
     private Set<Karma> karmas;
 
     private String userName;

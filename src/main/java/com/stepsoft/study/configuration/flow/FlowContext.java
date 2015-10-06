@@ -13,13 +13,8 @@ import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.integration.support.management.DefaultMetricsFactory;
 import org.springframework.integration.support.management.MetricsFactory;
 import org.springframework.scheduling.support.PeriodicTrigger;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
-import org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource;
-import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.FLOW_METRICS_FACTORY;
-import static java.util.Collections.singletonList;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_POLLER;
 
@@ -46,7 +41,10 @@ import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_
         "com.stepsoft.study.configuration.flow",
         "com.stepsoft.study.flow.messaging"
 })
-@Import({ImportFlowContext.class})
+@Import({
+        ImportFlowContext.class,
+        ExportFlowContext.class
+})
 @PropertySource("classpath:flow.properties")
 public class FlowContext {
 
@@ -57,16 +55,11 @@ public class FlowContext {
     private int maxMessagesPerPoll;
 
     @Bean(name = DEFAULT_POLLER)
-    public PollerMetadata defaultPoller(PlatformTransactionManager manager) {
-
-        MatchAlwaysTransactionAttributeSource attributeSource = new MatchAlwaysTransactionAttributeSource();
-        attributeSource.setTransactionAttribute(new DefaultTransactionAttribute());
-        TransactionInterceptor interceptor = new TransactionInterceptor(manager, attributeSource);
+    public PollerMetadata defaultPoller() {
 
         PollerMetadata pollerMetadata = new PollerMetadata();
         pollerMetadata.setTrigger(new PeriodicTrigger(fixedDelay, MILLISECONDS));
         pollerMetadata.setMaxMessagesPerPoll(maxMessagesPerPoll);
-        pollerMetadata.setAdviceChain(singletonList(interceptor));
 
         return pollerMetadata;
     }

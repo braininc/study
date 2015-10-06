@@ -3,10 +3,7 @@ package com.stepsoft.study.flow.messaging;
 /**
  * @author Eugene Stepanenkov
  */
-public enum ImportAction {
+public enum ExportAction {
 
-    ADD,
-    UPDATE,
-    DELETE,
-    FETCH;
+    EXPORT;
 }
