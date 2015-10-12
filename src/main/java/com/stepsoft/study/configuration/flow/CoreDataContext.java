@@ -20,6 +20,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.JPA_TRANSACTION_MANAGER;
 import static org.hibernate.cfg.AvailableSettings.DIALECT;
 import static org.hibernate.cfg.AvailableSettings.FORMAT_SQL;
 import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
@@ -99,8 +100,8 @@ public class CoreDataContext {
         return dataSource;
     }
 
-    @Bean
     @Autowired
+    @Bean(name = JPA_TRANSACTION_MANAGER)
     public PlatformTransactionManager transactionManager(EntityManagerFactory factory) {
 
         JpaTransactionManager transactionManager = new JpaTransactionManager();

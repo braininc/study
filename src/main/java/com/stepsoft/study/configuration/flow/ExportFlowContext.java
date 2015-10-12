@@ -17,6 +17,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -50,12 +51,14 @@ import java.util.Map;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.EXPORT_ACTION;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.EXPORT_JOB;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.EXPORT_STEP;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_EXPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_EXPORT_POLLER;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_EXPORT_PROCESSING_LAUNCH_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_EXPORT_PROCESSING_READER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_EXPORT_SPLITTER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_EXPORT_TRANSFORMATION_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.JPA_TRANSACTION_MANAGER;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_EXPORT_NOTIFICATION_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_EXPORT_NOTIFICATION_HEADER_ENRICHER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_EXPORT_PROCESSING_CHANNEL;
@@ -76,8 +79,6 @@ import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_
 @PropertySource("classpath:flow.properties")
 @PropertySource("classpath:mail.properties")
 public class ExportFlowContext {
-
-    public static final String EXPORT_STEP = "exportStep";
 
     @Value("${flow.defaultPoller.fixedDelay}")
     private int fixedDelay;
@@ -109,6 +110,10 @@ public class ExportFlowContext {
     @Autowired
     private StepBuilderFactory steps;
 
+    @Autowired
+    @Qualifier(JPA_TRANSACTION_MANAGER)
+    private PlatformTransactionManager transactionManager;
+
     @Bean(name = DEFAULT_POLLER)
     public PollerMetadata defaultPoller() {
 
@@ -121,11 +126,11 @@ public class ExportFlowContext {
 
     @Autowired
     @Bean(name = IN_EXPORT_POLLER)
-    public PollerMetadata inExportPoller(PlatformTransactionManager manager) {
+    public PollerMetadata inExportPoller() {
 
         MatchAlwaysTransactionAttributeSource attributeSource = new MatchAlwaysTransactionAttributeSource();
         attributeSource.setTransactionAttribute(new DefaultTransactionAttribute());
-        TransactionInterceptor interceptor = new TransactionInterceptor(manager, attributeSource);
+        TransactionInterceptor interceptor = new TransactionInterceptor(transactionManager, attributeSource);
 
         PollerMetadata metadata = new PollerMetadata();
         metadata.setTrigger(new PeriodicTrigger(exportFixedDelay, MILLISECONDS));
