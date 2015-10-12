@@ -143,4 +143,16 @@ public class CoreDataContext {
 
         return executor;
     }
+
+    @Bean
+    @Autowired
+    public JpaExecutor exportFetchJpaExecutor(EntityManagerFactory factory) {
+
+        JpaExecutor executor = new JpaExecutor(factory);
+        executor.setEntityClass(Sinner.class);
+        executor.setExpectSingleResult(false);
+        executor.setDeleteAfterPoll(true);
+
+        return executor;
+    }
 }

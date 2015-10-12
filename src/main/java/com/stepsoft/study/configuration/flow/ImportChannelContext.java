@@ -12,11 +12,10 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_FETCH_DB_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_POST_PERSIST_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_PRE_PERSIST_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_SPLITTER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_IMPORT_TRANSFORMATION_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_TRANSFORMER_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_TRANSFORMATION_CHANNEL;
 
 /**
  * @author Eugene Stepanenkov
@@ -38,12 +37,6 @@ public class ImportChannelContext {
 
     @Bean(name = IN_IMPORT_DB_CHANNEL)
     public DirectChannel inImportDbChannel() {
-
-        return new DirectChannel();
-    }
-
-    @Bean(name = IN_IMPORT_SPLITTER_CHANNEL)
-    public DirectChannel inImportSplitterChannel() {
 
         return new DirectChannel();
     }
@@ -90,8 +83,8 @@ public class ImportChannelContext {
         return new DirectChannel();
     }
 
-    @Bean(name = OUT_IMPORT_TRANSFORMER_CHANNEL)
-    public DirectChannel outImportTransformerChannel() {
+    @Bean(name = OUT_IMPORT_TRANSFORMATION_CHANNEL)
+    public DirectChannel outImportTransformationChannel() {
 
         return new DirectChannel();
     }

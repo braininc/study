@@ -3,6 +3,7 @@ package com.stepsoft.study.configuration.flow;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.GatewayHeader;
 import org.springframework.integration.annotation.MessagingGateway;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.EXPORT_ACTION;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_EXPORT_CHANNEL;
@@ -11,13 +12,26 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_E
  * @author Eugene Stepanenkov
  */
 @MessagingGateway(defaultRequestChannel = IN_EXPORT_CHANNEL)
+@Transactional
 public interface ExportGateway {
 
-    @Gateway(headers = {
-            @GatewayHeader(
-                    name = EXPORT_ACTION,
-                    expression = "T(com.stepsoft.study.flow.messaging.ExportAction).EXPORT"
-            )
-    })
+    @Gateway(
+            headers = {
+                    @GatewayHeader(
+                            name = EXPORT_ACTION,
+                            expression = "T(com.stepsoft.study.flow.messaging.ExportAction).EXPORT"
+                    )
+            }
+    )
     void export();
+
+    @Gateway(
+            headers = {
+                    @GatewayHeader(
+                            name = EXPORT_ACTION,
+                            expression = "T(com.stepsoft.study.flow.messaging.ExportAction).REPORT"
+                    )
+            }
+    )
+    void report();
 }

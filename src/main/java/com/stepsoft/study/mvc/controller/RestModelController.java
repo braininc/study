@@ -16,7 +16,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 /**
  * @author Eugene Stepanenkov
  */
-public abstract class BaseController<M> {
+public abstract class RestModelController<M> {
 
     protected abstract Long add(M model);
 

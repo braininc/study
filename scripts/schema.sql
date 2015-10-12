@@ -9,17 +9,27 @@ WITH GRANT OPTION;
 USE study;
 
 CREATE TABLE sinner (
-  id       INT AUTO_INCREMENT NOT NULL,
-  userName VARCHAR(30)        NOT NULL,
+  id        INT AUTO_INCREMENT NOT NULL,
+  user_name VARCHAR(30)        NOT NULL,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE karma (
-  id                INT AUTO_INCREMENT NOT NULL,
-  sinner_id         INT                NOT NULL,
-  drunkBottles      INT                NOT NULL,
-  maliciousLevel    INT                NOT NULL,
-  seenBlasphemy     BOOLEAN,
+  id              INT AUTO_INCREMENT NOT NULL,
+  sinner_id       INT                NOT NULL,
+  drunk_bottles   INT                NOT NULL,
+  malicious_level INT                NOT NULL,
+  seen_blasphemy  BOOLEAN,
   PRIMARY KEY (id),
   FOREIGN KEY (sinner_id) REFERENCES sinner (id)
 );
+
+/*CREATE TABLE sinner_summary (
+  id              INT AUTO_INCREMENT NOT NULL,
+  sinner_id       INT                NOT NULL,
+  drunk_bottles   INT                NOT NULL,
+  malicious_level INT                NOT NULL,
+  seen_blasphemy  INT                NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (sinner_id) REFERENCES sinner (id)
+)*/

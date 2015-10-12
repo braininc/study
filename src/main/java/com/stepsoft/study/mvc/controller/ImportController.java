@@ -14,7 +14,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @Controller
 @RequestMapping(value = SINNERS, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-public class SinnerController extends BaseController<SinnerModel> {
+public class ImportController extends RestModelController<SinnerModel> {
 
     @Autowired
     private ImportService importService;

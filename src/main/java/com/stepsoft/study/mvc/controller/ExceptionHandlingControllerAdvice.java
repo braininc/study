@@ -15,7 +15,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 /**
  * @author Eugene Stepanenkov
  */
-@ControllerAdvice(assignableTypes = BaseController.class)
+@ControllerAdvice(assignableTypes = RestModelController.class)
 public class ExceptionHandlingControllerAdvice {
 
     @Value("${app.mvc.response.exceptionWithStakeTrace}")

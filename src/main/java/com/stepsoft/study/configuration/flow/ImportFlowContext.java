@@ -30,7 +30,7 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_I
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IS_PERSISTED;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_DB_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_TRANSFORMER_CHANNEL;
+import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_IMPORT_TRANSFORMATION_CHANNEL;
 import static java.util.Collections.singletonMap;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.RETRIEVING;
 import static org.springframework.integration.jpa.support.OutboundGatewayType.UPDATING;
@@ -41,62 +41,6 @@ import static org.springframework.integration.jpa.support.OutboundGatewayType.UP
 @Configuration
 @Import(ImportChannelContext.class)
 public class ImportFlowContext {
-
-    @MessageEndpoint
-    public static class InImportRouterEndpoint {
-
-        @Router(inputChannel = IN_IMPORT_CHANNEL)
-        public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
-
-            switch (action) {
-
-                case DELETE:
-                case FETCH:
-                    return IN_IMPORT_DB_CHANNEL;
-
-                case ADD:
-                case UPDATE:
-                    return IN_IMPORT_TRANSFORMATION_CHANNEL;
-
-                default:
-                    throw new IllegalStateException();
-            }
-        }
-    }
-
-    @MessageEndpoint
-    public static class InImportTransformerEndpoint {
-
-        @Transformer(inputChannel = IN_IMPORT_TRANSFORMATION_CHANNEL, outputChannel = IN_IMPORT_DB_CHANNEL)
-        public Sinner transform(Sinner sinner) {
-
-            return sinner;
-        }
-    }
-
-    @MessageEndpoint
-    public static class InImportDbRouterEndpoint {
-
-        @Router(inputChannel = IN_IMPORT_DB_CHANNEL)
-        public String route(@Header(name = IMPORT_ACTION) ImportAction action) {
-
-            switch (action) {
-
-                case DELETE:
-                    return IN_IMPORT_PRE_PERSIST_CHANNEL;
-
-                case FETCH:
-                    return IN_IMPORT_FETCH_DB_CHANNEL;
-
-                case ADD:
-                case UPDATE:
-                    return IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL;
-
-                default:
-                    throw new IllegalStateException();
-            }
-        }
-    }
 
     @Bean
     @MessageHeaderEnricher(inputChannel = IN_IMPORT_PRE_PERSIST_CHANNEL, outputChannel = IN_IMPORT_FETCH_DB_CHANNEL)
@@ -154,10 +98,58 @@ public class ImportFlowContext {
     }
 
     @MessageEndpoint
-    public static class OutImportDbRouterEndpoint {
+    public static class InMessageEndpoints {
+
+        @Router(inputChannel = IN_IMPORT_CHANNEL)
+        public String toDbChannels(@Header(name = IMPORT_ACTION) ImportAction action) {
+
+            switch (action) {
+
+                case DELETE:
+                case FETCH:
+                    return IN_IMPORT_DB_CHANNEL;
+
+                case ADD:
+                case UPDATE:
+                    return IN_IMPORT_TRANSFORMATION_CHANNEL;
+
+                default:
+                    throw new IllegalStateException();
+            }
+        }
+
+        @Router(inputChannel = IN_IMPORT_DB_CHANNEL)
+        public String toDbGatewayChannels(@Header(name = IMPORT_ACTION) ImportAction action) {
+
+            switch (action) {
+
+                case DELETE:
+                    return IN_IMPORT_PRE_PERSIST_CHANNEL;
+
+                case FETCH:
+                    return IN_IMPORT_FETCH_DB_CHANNEL;
+
+                case ADD:
+                case UPDATE:
+                    return IN_IMPORT_ADD_OR_UPDATE_DB_CHANNEL;
+
+                default:
+                    throw new IllegalStateException();
+            }
+        }
+
+        @Transformer(inputChannel = IN_IMPORT_TRANSFORMATION_CHANNEL, outputChannel = IN_IMPORT_DB_CHANNEL)
+        public Sinner fromSinnerModelToSinner(Sinner sinner) {
+
+            return sinner;
+        }
+    }
+
+    @MessageEndpoint
+    public static class OutMessageEndpoints {
 
         @Router(inputChannel = OUT_IMPORT_DB_CHANNEL)
-        public String route(@Header(name = IMPORT_ACTION) ImportAction action,
+        public String toOut(@Header(name = IMPORT_ACTION) ImportAction action,
                             @Header(name = IS_PERSISTED, required = false) Boolean isPersisted) {
 
             switch (action) {
@@ -170,20 +162,15 @@ public class ImportFlowContext {
                 case FETCH:
                 case ADD:
                 case UPDATE:
-                    return OUT_IMPORT_TRANSFORMER_CHANNEL;
+                    return OUT_IMPORT_TRANSFORMATION_CHANNEL;
 
                 default:
                     throw new IllegalStateException();
             }
         }
-    }
 
-    @MessageEndpoint
-    public static class OutImportTransformerEndpoint {
-
-
-        @Transformer(inputChannel = OUT_IMPORT_TRANSFORMER_CHANNEL, outputChannel = OUT_IMPORT_CHANNEL)
-        public SinnerModel transform(SinnerModel sinnerModel) {
+        @Transformer(inputChannel = OUT_IMPORT_TRANSFORMATION_CHANNEL, outputChannel = OUT_IMPORT_CHANNEL)
+        public SinnerModel fromSinnerToSinnerModel(SinnerModel sinnerModel) {
 
             return sinnerModel;
         }

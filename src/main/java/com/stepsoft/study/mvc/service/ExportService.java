@@ -16,4 +16,8 @@ public class ExportService {
     public void export() {
         gateway.export();
     }
+
+    public void report() {
+        gateway.report();
+    }
 }
