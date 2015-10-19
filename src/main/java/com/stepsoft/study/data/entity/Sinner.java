@@ -2,6 +2,7 @@ package com.stepsoft.study.data.entity;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import static javax.persistence.CascadeType.PERSIST;
  * @author Eugene Stepanenkov
  */
 @Entity
+@SQLDelete(sql = "update sinner set isProcessed=true where id")
 public class Sinner {
 
     @Id

@@ -24,12 +24,4 @@ CREATE TABLE karma (
   FOREIGN KEY (sinner_id) REFERENCES sinner (id)
 );
 
-/*CREATE TABLE sinner_summary (
-  id              INT AUTO_INCREMENT NOT NULL,
-  sinner_id       INT                NOT NULL,
-  drunk_bottles   INT                NOT NULL,
-  malicious_level INT                NOT NULL,
-  seen_blasphemy  INT                NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (sinner_id) REFERENCES sinner (id)
-)*/
+ALTER TABLE karma ADD COLUMN is_processed BOOLEAN NOT NULL DEFAULT FALSE;
