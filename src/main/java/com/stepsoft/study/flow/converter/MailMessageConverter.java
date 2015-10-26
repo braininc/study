@@ -1,11 +1,11 @@
-package com.stepsoft.study.flow.messaging;
+package com.stepsoft.study.flow.converter;
+
+import java.util.List;
 
 import com.stepsoft.study.mvc.model.SinnerSummaryModel;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.integration.config.IntegrationConverter;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author Eugene Stepanenkov

@@ -1,4 +1,7 @@
-package com.stepsoft.study.flow.messaging;
+package com.stepsoft.study.flow.converter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import com.stepsoft.study.data.entity.Karma;
 import com.stepsoft.study.data.entity.Sinner;
@@ -9,9 +12,6 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.integration.config.IntegrationConverter;
 import org.springframework.stereotype.Component;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toSet;

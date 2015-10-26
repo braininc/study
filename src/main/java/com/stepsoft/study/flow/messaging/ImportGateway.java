@@ -1,4 +1,4 @@
-package com.stepsoft.study.configuration.flow;
+package com.stepsoft.study.flow.messaging;
 
 import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.integration.annotation.Gateway;

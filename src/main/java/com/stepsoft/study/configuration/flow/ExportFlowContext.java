@@ -20,10 +20,8 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
@@ -43,8 +41,8 @@ import org.springframework.integration.transformer.support.StaticHeaderValueMess
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.scheduling.support.PeriodicTrigger;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
@@ -58,7 +56,6 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_E
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_EXPORT_PROCESSING_READER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_EXPORT_SPLITTER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.IN_EXPORT_TRANSFORMATION_CHANNEL;
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.JPA_TRANSACTION_MANAGER;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_EXPORT_NOTIFICATION_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_EXPORT_NOTIFICATION_HEADER_ENRICHER_CHANNEL;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.OUT_EXPORT_PROCESSING_CHANNEL;
@@ -75,8 +72,6 @@ import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_
 @Configuration
 @Import(ExportChannelContext.class)
 @EnableBatchProcessing
-@ComponentScan(basePackages = "com.stepsoft.study.flow.batch")
-@PropertySource("classpath:flow.properties")
 @PropertySource("classpath:mail.properties")
 public class ExportFlowContext {
 
@@ -111,8 +106,7 @@ public class ExportFlowContext {
     private StepBuilderFactory steps;
 
     @Autowired
-    @Qualifier(JPA_TRANSACTION_MANAGER)
-    private PlatformTransactionManager transactionManager;
+    private JpaTransactionManager transactionManager;
 
     @Bean(name = DEFAULT_POLLER)
     public PollerMetadata defaultPoller() {
@@ -185,9 +179,7 @@ public class ExportFlowContext {
     @Autowired
     @Bean(name = EXPORT_STEP)
     @SuppressWarnings("unchecked")
-    public Step export(ItemReader reader,
-                       ItemProcessor processor,
-                       ItemWriter writer) {
+    public Step export(ItemReader reader, ItemProcessor processor, ItemWriter writer) {
 
         return steps.get(EXPORT_STEP)
                 .chunk(chunkSize)

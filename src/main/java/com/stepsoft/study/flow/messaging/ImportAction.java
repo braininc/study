@@ -8,5 +8,5 @@ public enum ImportAction {
     ADD,
     UPDATE,
     DELETE,
-    FETCH;
+    FETCH
 }

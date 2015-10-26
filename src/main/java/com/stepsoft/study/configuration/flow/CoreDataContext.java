@@ -17,10 +17,8 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import static com.stepsoft.study.configuration.utils.ConfigurationConstants.JPA_TRANSACTION_MANAGER;
 import static com.stepsoft.study.data.utils.EntityConstants.FROM_SINNER_WHERE_IS_PROCESSED_FALSE;
 import static org.hibernate.cfg.AvailableSettings.DIALECT;
 import static org.hibernate.cfg.AvailableSettings.FORMAT_SQL;
@@ -104,9 +102,9 @@ public class CoreDataContext {
         return dataSource;
     }
 
+    @Bean
     @Autowired
-    @Bean(name = JPA_TRANSACTION_MANAGER)
-    public PlatformTransactionManager transactionManager(EntityManagerFactory factory) {
+    public JpaTransactionManager transactionManager(EntityManagerFactory factory) {
 
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(factory);

@@ -1,6 +1,6 @@
 package com.stepsoft.study.mvc.service;
 
-import com.stepsoft.study.configuration.flow.ExportGateway;
+import com.stepsoft.study.flow.messaging.ExportGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
