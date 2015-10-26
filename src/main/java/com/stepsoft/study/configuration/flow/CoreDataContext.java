@@ -1,5 +1,9 @@
 package com.stepsoft.study.configuration.flow;
 
+import java.util.Properties;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+
 import com.stepsoft.study.data.entity.Sinner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,11 +20,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import java.util.Properties;
-
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.JPA_TRANSACTION_MANAGER;
+import static com.stepsoft.study.data.utils.EntityConstants.FROM_SINNER_WHERE_IS_PROCESSED_FALSE;
 import static org.hibernate.cfg.AvailableSettings.DIALECT;
 import static org.hibernate.cfg.AvailableSettings.FORMAT_SQL;
 import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
@@ -150,9 +151,9 @@ public class CoreDataContext {
     public JpaExecutor exportFetchJpaExecutor(EntityManagerFactory factory) {
 
         JpaExecutor executor = new JpaExecutor(factory);
-        executor.setEntityClass(Sinner.class);
         executor.setExpectSingleResult(false);
         executor.setDeleteAfterPoll(true);
+        executor.setJpaQuery(FROM_SINNER_WHERE_IS_PROCESSED_FALSE);
 
         return executor;
     }

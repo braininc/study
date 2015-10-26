@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import static com.stepsoft.study.data.utils.EntityConstants.DRUNK_BOTTLES;
+import static com.stepsoft.study.data.utils.EntityConstants.MALICIOUS_LEVEL;
+import static com.stepsoft.study.data.utils.EntityConstants.SEEN_BLASPHEMY;
 import static com.stepsoft.study.data.utils.EntityConstants.SINNER_ID;
 
 /**
@@ -29,8 +32,13 @@ public class Karma {
     @JoinColumn(name = SINNER_ID)
     private Sinner sinner;
 
+    @Column(name = DRUNK_BOTTLES)
     private Integer drunkBottles;
+
+    @Column(name = MALICIOUS_LEVEL)
     private Integer maliciousLevel;
+
+    @Column(name = SEEN_BLASPHEMY)
     private Boolean seenBlasphemy;
 
     public Long getId() {

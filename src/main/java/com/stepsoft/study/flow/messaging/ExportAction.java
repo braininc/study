@@ -5,5 +5,6 @@ package com.stepsoft.study.flow.messaging;
  */
 public enum ExportAction {
 
-    EXPORT, REPORT;
+    EXPORT,
+    REPORT
 }

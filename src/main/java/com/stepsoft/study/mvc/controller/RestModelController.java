@@ -29,10 +29,7 @@ public abstract class RestModelController<M> {
     @RequestMapping(method = POST)
     public ResponseEntity<?> post(@RequestBody M model) {
 
-        return created(
-                fromCurrentRequest()
-                        .path("/{id}")
-                        .buildAndExpand(add(model)).toUri())
+        return created(fromCurrentRequest().path("/{id}").buildAndExpand(add(model)).toUri())
                 .build();
     }
 
