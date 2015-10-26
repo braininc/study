@@ -60,6 +60,9 @@ public class CoreDataContext {
     @Value("${db.hibernate.useNewIdGeneratorMappings}")
     private String useNewIdGenerator;
 
+    @Value("${db.context.jpaExecutor.maxNumberOfResults}")
+    private int maxNumberOfResults;
+
     @Autowired
     private ExpressionParser expressionParser;
 
@@ -154,6 +157,7 @@ public class CoreDataContext {
         executor.setExpectSingleResult(false);
         executor.setDeleteAfterPoll(true);
         executor.setJpaQuery(FROM_SINNER_WHERE_IS_PROCESSED_FALSE);
+        executor.setMaxNumberOfResults(maxNumberOfResults);
 
         return executor;
     }
