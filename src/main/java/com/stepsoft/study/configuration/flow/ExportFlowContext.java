@@ -1,8 +1,5 @@
 package com.stepsoft.study.configuration.flow;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.stepsoft.study.configuration.annotation.JobGateway;
 import com.stepsoft.study.configuration.annotation.MailOutboundChannelAdapter;
 import com.stepsoft.study.configuration.annotation.MessageHeaderEnricher;
@@ -24,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.Poller;
@@ -46,6 +42,9 @@ import org.springframework.scheduling.support.PeriodicTrigger;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.EXPORT_ACTION;
 import static com.stepsoft.study.configuration.utils.ConfigurationConstants.EXPORT_JOB;
@@ -72,7 +71,6 @@ import static org.springframework.integration.scheduling.PollerMetadata.DEFAULT_
 @Configuration
 @Import(ExportChannelContext.class)
 @EnableBatchProcessing
-@PropertySource("classpath:mail.properties")
 public class ExportFlowContext {
 
     @Value("${flow.defaultPoller.fixedDelay}")

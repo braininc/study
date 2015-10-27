@@ -42,7 +42,6 @@ public class ExportItemProcessor implements ItemProcessor<Sinner, SinnerSummaryM
         process(sinner.getKarmas(), result);
 
         return result;
-
     }
 
 }
