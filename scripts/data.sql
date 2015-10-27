@@ -1,6 +1,6 @@
 USE study;
 
-DROP PROCEDURE IF EXISTS gegenerate_sinners;
+DROP PROCEDURE IF EXISTS generate_sinners;
 
 CREATE PROCEDURE generate_sinners(amount INT)
   BEGIN
@@ -20,5 +20,5 @@ CREATE PROCEDURE generate_sinners(amount INT)
 
   END;
 
-CALL generate_sinners(35);
+CALL generate_sinners(100);
 
