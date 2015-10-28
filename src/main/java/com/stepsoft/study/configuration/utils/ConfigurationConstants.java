@@ -33,7 +33,6 @@ public abstract class ConfigurationConstants {
     public static final String IN_EXPORT_POLLER = "inExportPoller";
     public static final String EXPORT_JOB = "exportJob";
     public static final String EXPORT_STEP = "exportStep";
-    public static final String JPA_TRANSACTION_MANAGER = "jpaTransactionManager";
 
     // Message header keys
     public static final String IS_PERSISTED = "isPersisted";

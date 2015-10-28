@@ -1,7 +1,6 @@
 package com.stepsoft.study.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stepsoft.study.configuration.flow.CoreDataContext;
 import com.stepsoft.study.configuration.flow.FlowContext;
 import com.stepsoft.study.configuration.mvc.CoreWebContext;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package com.stepsoft.study.flow.messaging;
+package com.stepsoft.study.configuration.flow;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.GatewayHeader;

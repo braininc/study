@@ -27,17 +27,16 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.FLOW
         metricsFactory = FLOW_METRICS_FACTORY
 )
 @IntegrationComponentScan(basePackages = {
-        "com.stepsoft.study.flow.messaging",
-        "com.stepsoft.study.flow.converter"
+        "com.stepsoft.study.flow",
+        "com.stepsoft.study.configuration.flow"
 })
 @ComponentScan(basePackages = {
-        "com.stepsoft.study.flow.batch",
-        "com.stepsoft.study.flow.messaging",
-        "com.stepsoft.study.flow.converter"
+        "com.stepsoft.study.flow",
+        "com.stepsoft.study.configuration.flow"
 })
 @Import({
         ImportFlowContext.class,
-        ExportFlowContext.class,
+        ExportFlowContext.class
 })
 @PropertySource("classpath:flow.properties")
 public class FlowContext {

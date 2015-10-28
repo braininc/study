@@ -1,6 +1,6 @@
 package com.stepsoft.study.mvc.service;
 
-import com.stepsoft.study.flow.messaging.ImportGateway;
+import com.stepsoft.study.configuration.flow.ImportGateway;
 import com.stepsoft.study.mvc.model.SinnerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
