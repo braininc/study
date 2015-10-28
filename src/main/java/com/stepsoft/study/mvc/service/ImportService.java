@@ -16,12 +16,14 @@ public class ImportService {
 
     public Long add(SinnerModel sinnerModel) {
 
+        //todo fix the POST - it doesn't work
         SinnerModel added = gateway.add(sinnerModel);
         return added.getId();
     }
 
     public void modify(SinnerModel sinnerModel) {
 
+        //todo fix the PUT - it doesn't work
         gateway.modify(sinnerModel);
     }
 
