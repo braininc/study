@@ -1,8 +1,7 @@
 package com.stepsoft.study.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stepsoft.study.configuration.flow.FlowContext;
-import com.stepsoft.study.configuration.mvc.CoreWebContext;
+import com.stepsoft.study.configuration.mvc.WebContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +26,9 @@ import static com.stepsoft.study.configuration.utils.ConfigurationConstants.MAIL
 @PropertySource("classpath:app.properties")
 @PropertySource("classpath:mail.properties")
 @Import({
-        CoreWebContext.class,
+        WebContext.class,
         FlowContext.class,
-        CoreDataContext.class
+        DataContext.class
 })
 public class CoreContext {
 

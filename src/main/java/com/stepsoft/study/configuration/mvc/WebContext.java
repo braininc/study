@@ -21,7 +21,7 @@ import java.util.List;
         "com.stepsoft.study.mvc.controller",
         "com.stepsoft.study.mvc.service"
 })
-public class CoreWebContext extends WebMvcConfigurerAdapter {
+public class WebContext extends WebMvcConfigurerAdapter {
 
     @Autowired
     private ObjectMapper objectMapper;

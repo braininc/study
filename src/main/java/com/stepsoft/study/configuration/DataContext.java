@@ -32,7 +32,7 @@ import static org.springframework.integration.jpa.support.PersistMode.DELETE;
 @Configuration
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-public class CoreDataContext {
+public class DataContext {
 
     @Value("${db.connection.driverClassName}")
     private String driverClassName;
